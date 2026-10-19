@@ -1,16 +1,17 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#087344">
-<title>전화 받기</title>
-<스타일>
+<title>Take Phone</title>
+<style>
 :root{--green:#0a8b4b;--dark:#06452f;--light:#dff8d8;--ink:#17211b;--muted:#7b857f}
 *{box-sizing:border-box}
 body{margin:0;background:#101114;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;display:flex;justify-content:center;min-height:100dvh}
-버튼, 입력란, 텍스트 영역{font:inherit}
-버튼{커서:포인터}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
 .browser-note{position:fixed;top:0;left:0;right:0;height:26px;background:#101114;z-index:10}
 .phone{position:relative;width:min(100vw,430px);height:100dvh;min-height:600px;overflow:hidden;background:#087c43;isolation:isolate}
 .wallpaper{position:absolute;inset:0;z-index:-2;overflow:hidden;background:linear-gradient(145deg,#00583c 0%,#00884c 42%,#b7ef22 73%,#19a866 100%)}
@@ -44,10 +45,10 @@ body{margin:0;background:#101114;color:#fff;font-family:-apple-system,BlinkMacSy
 .app-title{font-size:20px;font-weight:750;flex:1}
 .header-action{border:0;background:transparent;color:#16834b;font-size:14px;font-weight:700}
 .screen-body{flex:1;min-height:0;overflow:auto}
-.메시지-화면{배경:#f3f3f7}
+.message-screen{background:#f3f3f7}
 .contact-head{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border-bottom:1px solid #e7e7eb}
 .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(145deg,#b8ef76,#16874c);display:grid;place-items:center;font-size:24px;color:#fff;flex-shrink:0}
-.연락처-이름{font-weight:750}
+.contact-name{font-weight:750}
 .contact-sub{font-size:12px;color:#858b92;margin-top:3px}
 .chat-list{padding:12px 12px 18px}
 .chat-row{width:100%;display:flex;align-items:center;gap:12px;border:0;border-bottom:1px solid #e5e5e9;background:transparent;text-align:left;padding:14px 5px;color:#202126}
@@ -108,12 +109,12 @@ body{margin:0;background:#101114;color:#fff;font-family:-apple-system,BlinkMacSy
 @media(min-width:431px){.phone{height:min(900px,100dvh);margin:auto;border-radius:30px}.home-content{padding-top:25px}}
 </style>
 </head>
-본문>
+<body>
 <div class="phone" id="phone">
   <div class="wallpaper" id="wallpaper"></div>
   <div class="status"><span id="clock">9:41</span><span class="status-right"><span>●</span><span class="signal">▂▄▆</span><span>Wi‑Fi</span><span class="battery"></span></span></div>
   <main class="home-content" id="home">
-    <div class="date" id="dateText">10월 19일 화요일</div>
+    <div class="date" id="dateText">10월 19일 월요일</div>
     <div class="app-grid" id="appGrid">
       <button class="app" data-app="phone"><span class="app-icon green">☎</span><span class="app-label">전화</span></button>
       <button class="app" data-app="messages"><span class="app-icon green">●</span><span class="app-label">메시지</span></button>
@@ -134,22 +135,22 @@ body{margin:0;background:#101114;color:#fff;font-family:-apple-system,BlinkMacSy
   <section class="app-screen" id="screen-messages">
     <header class="app-header"><button class="back" data-home>‹</button><div class="app-title">메시지</div><button class="header-action" id="manageToggle">편집</button></header>
     <div class="screen-body" id="messageList">
-      <button class="chat-row" id="openTakemichi"><span class="avatar">🌙</span><span class="preview"><strong>하나가키 타케미치</strong><span id="lastPreview">오늘 뭐 했어요? 시간이 되면 같이 걷자!</span></span><time>지금</time></button>
+      <button class="chat-row" id="openTakemichi"><span class="avatar">🍀</span><span class="preview"><strong>하나가키 타케미치</strong><span id="lastPreview">오늘 뭐 해? 시간 있으면 같이 걷자!</span></span><time>지금</time></button>
     </div>
     <div class="chat-view" id="chatView">
-      <div class="contact-head"><span class="avatar">🌙</span><div><div class="contact-name">하나가키 타케미치</div><div class="contact-sub">문자 이름</div></div><button class="header-action" id="backToList">목록</button></div>
+      <div class="contact-head"><span class="avatar">🍀</span><div><div class="contact-name">하나가키 타케미치</div><div class="contact-sub">문자 메시지</div></div><button class="header-action" id="backToList">목록</button></div>
       <div class="chat-messages" id="chatMessages"></div>
       <div class="manage-panel" id="managePanel">
-        <p>메시지를 직접 수정하거나 이용하실 수 있습니다. 아래 목록에서 내용을 기록해 주세요.</p>
+        <p>메시지를 직접 수정하거나 삭제할 수 있어. 아래 목록에서 내용을 바꾸고 저장을 눌러줘.</p>
         <div id="manageRows"></div>
-        <button class="small-btn" id="addPreset">타케미치목록 추가</button>
+        <button class="small-btn" id="addPreset">타케미치 메시지 추가</button>
       </div>
-      <form class="chat-compose" id="sendForm"><textarea id="messageInput"row="1" placeholder="메시지 입력" aria-label="메시지 입력"></textarea><button class="send-btn" type="submit">↑</button></form>
+      <form class="chat-compose" id="sendForm"><textarea id="messageInput" rows="1" placeholder="메시지 입력" aria-label="메시지 입력"></textarea><button class="send-btn" type="submit">↑</button></form>
     </div>
   </section>
 
   <section class="app-screen" id="screen-phone">
-    <header class="app-header"><button class="back" data-home>‹</button><div class="app-title">전화</div><button class="header-action" id="clearDial">전화</button></header>
+    <header class="app-header"><button class="back" data-home>‹</button><div class="app-title">전화</div><button class="header-action" id="clearDial">지우기</button></header>
     <div class="screen-body phone-pad">
       <div style="color:#737a75;font-size:13px">타케미치에게 전화하기</div>
       <div class="dial-number" id="dialNumber"></div>
@@ -160,31 +161,31 @@ body{margin:0;background:#101114;color:#fff;font-family:-apple-system,BlinkMacSy
   </section>
 
   <section class="app-screen" id="screen-photos">
-    <header class="app-header"><button class="back" data-home">‹</button><div class="app-title">사진</div><button class="header-action" id="addPhoto">사진 추가</button></header>
+    <header class="app-header"><button class="back" data-home>‹</button><div class="app-title">사진</div><button class="header-action" id="addPhoto">사진 추가</button></header>
     <div class="screen-body"><div class="photo-tools"><span style="font-size:13px;color:#777">사진 주소(URL)를 추가하면 갤러리에 표시돼.</span></div><div class="photo-grid" id="photoGrid"></div></div>
   </section>
 
   <section class="app-screen" id="screen-camera">
-    <header class="app-header"><button class="back" data-home">‹</button><div class="app-title">카메라</div></header>
+    <header class="app-header"><button class="back" data-home>‹</button><div class="app-title">카메라</div></header>
     <div class="screen-body" style="background:#191a1c;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:24px;text-align:center">
-      <div style="font-size:76px">📷</div><strong>카메라</strong><p style="color:#bbb;font-size:13px;line-height:1.6">웹사이트는 실제 카메라 촬영을 자동으로 할 수 있습니다<br>이 화면은 카메라 앱 모양의 장식 사진이야.</p><button class="small-btn" id="cameraToPhotos">사진첩</button>
+      <div style="font-size:76px">📷</div><strong>카메라</strong><p style="color:#bbb;font-size:13px;line-height:1.6">웹사이트는 실제 카메라 촬영을 자동으로 할 수 없어서<br>이 화면은 카메라 앱 모양의 장식 화면이야.</p><button class="small-btn" id="cameraToPhotos">사진첩 열기</button>
     </div>
   </section>
 
   <section class="app-screen" id="screen-notes">
     <header class="app-header"><button class="back" data-home>‹</button><div class="app-title">메모</div><button class="header-action" id="saveNote">저장</button></header>
-    <div class="screen-body note-wrap"><input class="text-input" id="noteTitle" placeholder="제목"><textarea class="text-area" id="noteBody" placeholder="메모를 작성하세요."></textarea><span style="font-size:12px;color:#777">저장한 메모는 이 저장에 저장돼.</span></div>
+    <div class="screen-body note-wrap"><input class="text-input" id="noteTitle" placeholder="제목"><textarea class="text-area" id="noteBody" placeholder="메모를 작성하세요."></textarea><span style="font-size:12px;color:#777">저장한 메모는 이 브라우저에 보관돼.</span></div>
   </section>
 
   <section class="app-screen" id="screen-settings">
-    <header class="app-header"><button class="back" data-home">‹</button><div class="app-title">설정</div></header>
+    <header class="app-header"><button class="back" data-home>‹</button><div class="app-title">설정</div></header>
     <div class="screen-body">
-      <div class="contact-head"><span class="avatar">🌙</span><div><div class="contact-name">전화 받기</div><div class="contact-sub">초록색 클로버 테마</div></div></div>
+      <div class="contact-head"><span class="avatar">🍀</span><div><div class="contact-name">Take Phone</div><div class="contact-sub">초록색 클로버 테마</div></div></div>
       <div class="settings-list">
         <div class="setting-row"><span>배경화면</span><button id="wallGreen">초록색</button></div>
         <div class="setting-row"><span>메시지 내용 편집</span><button id="settingsEditMessages">편집하기</button></div>
-        <div class="setting-row"><span>메모 PDF</span><button id="clearNote">초기화</button></div>
-        <div class="setting-row"><span>안내</span><span style="font-size:12px;color:#7c827e">가상화면</span></div>
+        <div class="setting-row"><span>메모 초기화</span><button id="clearNote">초기화</button></div>
+        <div class="setting-row"><span>화면 안내</span><span style="font-size:12px;color:#7c827e">가상 휴대폰</span></div>
       </div>
       <div class="wallpaper-options"><button data-wall="green" aria-label="초록 배경"></button><button data-wall="light" aria-label="밝은 배경"></button><button data-wall="purple" aria-label="보라 배경"></button></div>
     </div>
@@ -197,16 +198,16 @@ body{margin:0;background:#101114;color:#fff;font-family:-apple-system,BlinkMacSy
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const defaultMessages = [
- {from:"takemichi",text:"오늘 뭐 했어요? 시간이 같이 같이 걷자!",time:"오후 2:10"},
- {from:"me",text:"좋아! 절대적으로?",time:"오후 2:12"},
- {from:"takemichi",text:" 역에서 만나자! 이웃지 않게. 아마…!",time:"오후 2:13"}
+ {from:"takemichi",text:"오늘 뭐 해? 시간 있으면 같이 걷자!",time:"오후 2:10"},
+ {from:"me",text:"좋아! 어디서 만날까?",time:"오후 2:12"},
+ {from:"takemichi",text:"역 앞에서 만나자! 늦지 않을게. 아마도…!",time:"오후 2:13"}
 ];
-메시지 = load("takephone_messages", defaultMessages);
+let messages = load("takephone_messages", defaultMessages);
 let photos = load("takephone_photos", []);
 let activeScreen = null, chatOpen = false, manageMode = false, dial = "", modalCallback = null;
-함수 로드(key, fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(e){return fallback}}
-함수 save(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&','<':'<','>':'>','"':'"',"'":'''}[c]))}
+function load(key, fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(e){return fallback}}
+function save(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function showToast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
 function openApp(name){
  activeScreen=name; $$(".app-screen").forEach(s=>s.classList.remove("active"));
@@ -217,7 +218,7 @@ function openApp(name){
  if(name==="photos")renderPhotos();
  if(name==="notes"){ $("#noteTitle").value=load("takephone_note_title","");$("#noteBody").value=load("takephone_note_body","");}
 }
-함수 goHome(){
+function goHome(){
  activeScreen=null;$$(".app-screen").forEach(s=>s.classList.remove("active"));
  $("#home").style.display="block";$("#dock").style.display="flex";$("#homeIndicator").style.display="block";
 }
@@ -232,47 +233,47 @@ $("#openTakemichi").addEventListener("click",()=>{chatOpen=true;$("#messageList"
 $("#backToList").addEventListener("click",()=>{chatOpen=false;$("#chatView").classList.remove("active");$("#messageList").style.display="block";renderList()});
 function renderMessages(){
  const area=$("#chatMessages");
- Area.innerHTML='<div class="day-label">오늘</div>'+messages.map((m,i)=>`<div class="bubble-wrap ${m.from==="me"?"mine":""}"><div class="bubble" data-msg="${i}" title="편집 메뉴에서 내용을 넣을 수 있어">${escapeHtml(m.text)}</div><div class="bubble-meta">${escapeHtml(m.time||"지금")}</div></div>`).join("");
- area.scrollTop = area.scrollHeight; renderManageRows(); renderList();
+ area.innerHTML='<div class="day-label">오늘</div>'+messages.map((m,i)=>`<div class="bubble-wrap ${m.from==="me"?"mine":""}"><div class="bubble" data-msg="${i}" title="편집 메뉴에서 내용을 수정할 수 있어">${escapeHtml(m.text)}</div><div class="bubble-meta">${escapeHtml(m.time||"지금")}</div></div>`).join("");
+ area.scrollTop=area.scrollHeight;renderManageRows();renderList();
 }
 $("#sendForm").addEventListener("submit",e=>{e.preventDefault();const input=$("#messageInput");const text=input.value.trim();if(!text)return;messages.push({from:"me",text,time:nowTime()});save("takephone_messages",messages);input.value="";renderMessages();});
 function nowTime(){const d=new Date();return (d.getHours()<12?"오전 ":"오후 ")+(d.getHours()%12||12)+":"+String(d.getMinutes()).padStart(2,"0")}
-$("#manageToggle").addEventListener("click",()=>{if(!chatOpen){showToast("타케미치 대화를 먼저 줘");return}manageMode=!manageMode;$("#managePanel").classList.toggle("show",manageMode);$("#manageToggle").textContent=manageMode?"완료":"편집";renderManageRows()});
-함수 renderManageRows(){
+$("#manageToggle").addEventListener("click",()=>{if(!chatOpen){showToast("타케미치 대화를 먼저 열어줘");return}manageMode=!manageMode;$("#managePanel").classList.toggle("show",manageMode);$("#manageToggle").textContent=manageMode?"완료":"편집";renderManageRows()});
+function renderManageRows(){
  const rows=$("#manageRows");if(!rows)return;
  rows.innerHTML=messages.map((m,i)=>`<div class="manage-row"><input aria-label="메시지 ${i+1}" data-edit="${i}" value="${escapeHtml(m.text)}"><button class="small-btn" data-save-msg="${i}">저장</button><button class="small-btn" data-delete-msg="${i}">삭제</button></div>`).join("");
  rows.querySelectorAll("[data-save-msg]").forEach(b=>b.addEventListener("click",()=>{const i=+b.dataset.saveMsg;const v=rows.querySelector(`[data-edit="${i}"]`).value.trim();if(!v){showToast("메시지 내용을 입력해줘");return}messages[i].text=v;save("takephone_messages",messages);renderMessages();showToast("메시지를 수정했어")}));
- rows.querySelectorAll("[data-delete-msg]").forEach(b=>b.addEventListener("click",()=>{messages.splice(+b.dataset.deleteMsg,1);save("takephone_messages",messages);renderMessages();showToast("메시지를 삭제했습니다")}));
+ rows.querySelectorAll("[data-delete-msg]").forEach(b=>b.addEventListener("click",()=>{messages.splice(+b.dataset.deleteMsg,1);save("takephone_messages",messages);renderMessages();showToast("메시지를 삭제했어")}));
 }
-$("#addPreset").addEventListener("click",()=>{messages.push({from:"takemichi",text:"무슨 일이야? 나한테도 말해도 돼!",time:nowTime()});save("takephone_messages",messages);renderMessages();showToast("메시지를 추가했어")});
-function renderDial(){ $("#dialNumber").textContent="dial";$("#callStatus").textContent="가상 전화 화면";const grid=$("#dialGrid");grid.innerHTML=["1","2","3","4","5","6","7","8","9","*","0","#"].map(n=>`<button class="digit" data-digit="${n}">${n}</button>`).join("");grid.querySelectorAll("[data-digit]").forEach(b=>b.addEventListener("click",()=>{dial+=b.dataset.digit;$("#dialNumber").textContent="dial"}))}
+$("#addPreset").addEventListener("click",()=>{messages.push({from:"takemichi",text:"무슨 일이야? 나한테 말해도 돼!",time:nowTime()});save("takephone_messages",messages);renderMessages();showToast("메시지를 추가했어")});
+function renderDial(){ $("#dialNumber").textContent=dial;$("#callStatus").textContent="가상 전화 화면";const grid=$("#dialGrid");grid.innerHTML=["1","2","3","4","5","6","7","8","9","*","0","#"].map(n=>`<button class="digit" data-digit="${n}">${n}</button>`).join("");grid.querySelectorAll("[data-digit]").forEach(b=>b.addEventListener("click",()=>{dial+=b.dataset.digit;$("#dialNumber").textContent=dial}))}
 $("#clearDial").addEventListener("click",()=>{dial="";renderDial()});
-$("#callButton").addEventListener("click",()=>{$("#callStatus").textContent=dial?"타케미치에게 연결 중…
+$("#callButton").addEventListener("click",()=>{$("#callStatus").textContent=dial?"타케미치에게 연결 중… (가상 통화)":"번호를 먼저 눌러줘";if(dial)setTimeout(()=>$("#callStatus").textContent="가상 통화가 종료되었어",2200)});
 function renderPhotos(){
  const grid=$("#photoGrid");const defaults=[{emoji:"🍀"},{emoji:"💚"},{emoji:"🌱"},{emoji:"☘️"},{emoji:"📷"},{emoji:"✨"}];
- Grid.innerHTML=[...defaults,...photos].map((p,i)=>p.url?`<button class="photo-tile" data-photo="${i}"><img src="${escapeHtml(p.url)}" alt="갤러리 사진" onerror="this.parentElement.textContent='이미지를 불러올 수 없음'"></button>`:`<button class="photo-tile" data-photo="${i}">${p.emoji}</button>`).join("");
- Grid.querySelectorAll("[data-photo]").forEach(b=>b.addEventListener("click",()=>{const idx=+b.dataset.photo;if(idx>=defaults.length){if(confirm("이 사진 주소를 삭제할까?")){photos.splice(idx-defaults.length,1);save("takephone_photos",photos);renderPhotos()}}else showToast("사진 추가 버튼으로 사진을 등록할 수 있어")}));
+ grid.innerHTML=[...defaults,...photos].map((p,i)=>p.url?`<button class="photo-tile" data-photo="${i}"><img src="${escapeHtml(p.url)}" alt="갤러리 사진" onerror="this.parentElement.textContent='이미지를 불러올 수 없음'"></button>`:`<button class="photo-tile" data-photo="${i}">${p.emoji}</button>`).join("");
+ grid.querySelectorAll("[data-photo]").forEach(b=>b.addEventListener("click",()=>{const idx=+b.dataset.photo;if(idx>=defaults.length){if(confirm("이 사진 주소를 삭제할까?")){photos.splice(idx-defaults.length,1);save("takephone_photos",photos);renderPhotos()}}else showToast("사진 추가 버튼으로 캐릭터 사진을 등록할 수 있어")}));
 }
-$("#addPhoto").addEventListener("click",()=>openModal("사진 추가","캐릭터 사진의 이미지 주소(URL)를여야 합니다. 표시되어야 합니다.","https://",v=>{if(!/^https?:\/\//i.test(v)){showToast("http 또는 https를 입력해줘");return}photos.push({url:v});save("takephone_photos",photos);renderPhotos();showToast("사진을 추가했어")}));
+$("#addPhoto").addEventListener("click",()=>openModal("사진 추가","캐릭터 사진의 이미지 주소(URL)를 붙여 넣어줘. 공개된 이미지 주소여야 보여.","https://",v=>{if(!/^https?:\/\//i.test(v)){showToast("http 또는 https 주소를 입력해줘");return}photos.push({url:v});save("takephone_photos",photos);renderPhotos();showToast("사진을 추가했어")}));
 $("#cameraToPhotos").addEventListener("click",()=>openApp("photos"));
-$("#saveNote").addEventListener("click",()=>{save("takephone_note_title",$("#noteTitle").value);save("takephone_note_body",$("#noteBody").value);showToast("메모를 저장했습니다")});
-$("#clearNote").addEventListener("click",()=>{if(confirm("저장한 메모를 지울까?")){save("takephone_note_title","");save("takephone_note_body","");showToast("메모를 불러왔습니다")}});
+$("#saveNote").addEventListener("click",()=>{save("takephone_note_title",$("#noteTitle").value);save("takephone_note_body",$("#noteBody").value);showToast("메모를 저장했어")});
+$("#clearNote").addEventListener("click",()=>{if(confirm("저장한 메모를 지울까?")){save("takephone_note_title","");save("takephone_note_body","");showToast("메모를 초기화했어")}});
 $("#settingsEditMessages").addEventListener("click",()=>{openApp("messages");$("#openTakemichi").click();manageMode=true;$("#managePanel").classList.add("show");$("#manageToggle").textContent="완료";renderManageRows()});
 function openModal(title,help,placeholder,callback){modalCallback=callback;$("#modalTitle").textContent=title;$("#modalHelp").textContent=help;$("#modalInput").placeholder=placeholder;$("#modalInput").value="";$("#modalBg").classList.add("show");setTimeout(()=>$("#modalInput").focus(),50)}
 $("#modalCancel").addEventListener("click",()=>$("#modalBg").classList.remove("show"));
 $("#modalOk").addEventListener("click",()=>{const v=$("#modalInput").value.trim();$("#modalBg").classList.remove("show");if(v&&modalCallback)modalCallback(v)});
-함수 setWallpaper(type){
+function setWallpaper(type){
  const w=$("#wallpaper");
  if(type==="light"){w.style.background="linear-gradient(145deg,#d8d8df,#f5f5f7 45%,#b7bdc1)";w.style.filter="none";w.style.setProperty("--x","0")}
- 그렇지 않고 type이 "purple"이면 w.style.background="linear-gradient(145deg,#101d43,#6654c8 55%,#e7a4cb)";w.style.filter="none"}
- 그렇지 않으면 {w.style.background="linear-gradient(145deg,#00583c 0%,#00884c 42%,#b7ef22 73%,#19a866 100%)";w.style.filter="none"}
- // 메인 팔레트를 변경하는 동안 추상적인 레이어드 배경 화면을 유지합니다.
+ else if(type==="purple"){w.style.background="linear-gradient(145deg,#101d43,#6654c8 55%,#e7a4cb)";w.style.filter="none"}
+ else {w.style.background="linear-gradient(145deg,#00583c 0%,#00884c 42%,#b7ef22 73%,#19a866 100%)";w.style.filter="none"}
+ // Keep abstract layered wallpaper while changing the main palette.
  w.style.setProperty("background-image",type==="light"?"linear-gradient(145deg,#d7d8df,#f7f7f9 55%,#b9c2bd)":type==="purple"?"linear-gradient(145deg,#102043,#6858c9 55%,#e6a3c9)":"linear-gradient(145deg,#00583c 0%,#00884c 42%,#b7ef22 73%,#19a866 100%)");
 }
 $$("[data-wall]").forEach(b=>b.addEventListener("click",()=>{setWallpaper(b.dataset.wall);save("takephone_wallpaper",b.dataset.wall)}));
-$("#wallGreen").addEventListener("click",()=>{setWallpaper("green");save("takephone_wallpaper","green");showToast("초록색 배경으로 등장어")});
+$("#wallGreen").addEventListener("click",()=>{setWallpaper("green");save("takephone_wallpaper","green");showToast("초록색 배경으로 바꿨어")});
 setWallpaper(load("takephone_wallpaper","green"));
-function updateClock(){const d=new Date();$("#clock").textContent=d.toLocaleTimeString("ko-KR",{hour:"2-digit", Minute:"2-digit",hour12:false});$("#dateText").textContent=`${d.getMonth()+1}월 ${d.getDate()}일 ${["일요일","월요일","화요일","수요일","목요일","금요일","토요일"][d.getDay()]}`}
+function updateClock(){const d=new Date();$("#clock").textContent=d.toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit",hour12:false});$("#dateText").textContent=`${d.getMonth()+1}월 ${d.getDate()}일 ${["일요일","월요일","화요일","수요일","목요일","금요일","토요일"][d.getDay()]}`}
 updateClock();setInterval(updateClock,30000);
 renderList();
 </script>
