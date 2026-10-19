@@ -1,531 +1,280 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>TakeMichi Phone</title>
-<style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#087344">
+<title>전화 받기</title>
+<스타일>
+:root{--green:#0a8b4b;--dark:#06452f;--light:#dff8d8;--ink:#17211b;--muted:#7b857f}
 *{box-sizing:border-box}
-body{
-  margin:0;background:#111;color:white;
-  font-family:-apple-system,BlinkMacSystemFont,"Arial",sans-serif;
-  user-select:none
-}
-button,input{font:inherit}
-button{cursor:pointer}
-.phone{
-  position:relative;width:min(100%,430px);height:100dvh;
-  min-height:600px;margin:auto;overflow:hidden;
-  background:#123e2a
-}
-.wallpaper{
-  position:absolute;inset:0;overflow:hidden;
-  background:
-    radial-gradient(ellipse at 10% 45%,#4ed0a2 0%,transparent 38%),
-    radial-gradient(ellipse at 80% 67%,#c9f42f 0%,transparent 43%),
-    linear-gradient(145deg,#003e2a,#168d42 45%,#a9e929 75%,#06472b)
-}
-.wallpaper:before,.wallpaper:after{
-  content:"";position:absolute;width:120%;height:52%;
-  left:-10%;border-radius:48%;
-  transform:rotate(-24deg)
-}
-.wallpaper:before{
-  top:7%;background:linear-gradient(130deg,#00442d,#008b45);
-  opacity:.85
-}
-.wallpaper:after{
-  bottom:-13%;background:linear-gradient(130deg,#073e28,#26a84e,#b7f22c);
-  opacity:.9
-}
-.status{
-  position:absolute;z-index:5;top:0;left:0;right:0;
-  height:55px;padding:14px 25px;
-  display:flex;justify-content:space-between;
-  font-size:15px;font-weight:650
-}
-.status .right{letter-spacing:2px}
-.screen{
-  position:absolute;inset:0;display:none;z-index:2
-}
-.screen.active{display:block}
-.lock{
-  text-align:center;z-index:3;
-  background:transparent
-}
-.lock-date{margin-top:100px;font-size:19px;font-weight:600;color:#e5f4e9}
-.lock-time{font-size:86px;font-weight:650;letter-spacing:-4px;margin-top:0}
-.lock-hint{
-  position:absolute;bottom:43px;left:0;right:0;
-  font-size:13px;color:#fff;text-shadow:0 1px 5px #333
-}
-.lock-actions{
-  position:absolute;bottom:100px;left:0;right:0;
-  display:flex;justify-content:space-around
-}
-.round{
-  width:54px;height:54px;border-radius:50%;
-  border:1px solid #ffffff66;background:#ffffff30;color:white;
-  font-size:23px
-}
-.home{background:transparent}
-.home-date{
-  position:absolute;top:65px;left:24px;
-  font-size:14px;color:#ffffffcc
-}
-.apps{
-  position:absolute;top:110px;left:20px;right:20px;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:25px 8px
-}
-.app{
-  border:0;background:none;color:white;
-  display:flex;align-items:center;flex-direction:column;gap:5px;
-  min-width:0;font-size:12px;text-shadow:0 1px 3px #333
-}
-.app-icon{
-  width:57px;height:57px;border-radius:15px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:29px;color:white;
-  box-shadow:0 2px 7px #0002;text-shadow:none
-}
-.phone-icon{background:linear-gradient(#5bea80,#13bb52)}
-.msg-icon{background:linear-gradient(#5ff58a,#04b84e)}
-.photo-icon{background:#fff}
-.camera-icon{background:linear-gradient(140deg,#bbb,#555)}
-.ai-icon{background:linear-gradient(140deg,#145a36,#8edc5d)}
-.settings-icon{background:linear-gradient(140deg,#777,#bbb)}
-.dock{
-  position:absolute;bottom:29px;left:17px;right:17px;
-  height:88px;border-radius:28px;background:#ffffff40;
-  border:1px solid #ffffff38;backdrop-filter:blur(18px);
-  display:flex;justify-content:space-evenly;align-items:center
-}
-.dock .app-icon{width:55px;height:55px}
-.home-bar{
-  position:absolute;z-index:20;bottom:7px;left:50%;
-  transform:translateX(-50%);width:105px;height:4px;
-  border-radius:8px;background:#ffffffd9
-}
-.lock-bar{
-  position:absolute;z-index:8;bottom:8px;left:50%;
-  transform:translateX(-50%);width:105px;height:4px;
-  border-radius:8px;background:#ffffffd9
-}
-.app-screen{
-  background:#f6f6f8;color:#171719;
-  padding-top:55px;overflow-y:auto
-}
-.app-header{
-  height:54px;display:flex;align-items:center;
-  justify-content:space-between;padding:0 17px;
-  background:#f8f8fa;border-bottom:1px solid #ddd;
-  font-weight:700;font-size:19px;position:sticky;top:0;z-index:4
-}
-.back{
-  border:0;background:none;color:#1684ff;font-size:16px;
-  padding:8px 0
-}
-.content{padding:16px}
-.contact{
-  display:flex;align-items:center;gap:12px;padding:12px;
-  border-bottom:1px solid #ddd;background:#fff;
-  width:100%;text-align:left;border-left:0;border-right:0;
-  border-top:0;color:#171719
-}
-.avatar{
-  width:48px;height:48px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(145deg,#d4f5ba,#20864a);
-  font-size:25px;flex-shrink:0
-}
-.sub{font-size:12px;color:#888;margin-top:4px}
-.chat-area{
-  display:flex;flex-direction:column;gap:12px;
-  padding:15px 12px 20px
-}
-.bubble{
-  max-width:82%;padding:10px 13px;border-radius:18px;
-  font-size:15px;line-height:1.5;overflow-wrap:anywhere
-}
-.bubble.them{align-self:flex-start;background:#e4e4e9}
-.bubble.me{align-self:flex-end;background:#31c85a;color:white}
-.chat-input{
-  display:flex;gap:8px;padding:10px;background:#fff;
-  border-top:1px solid #ddd;position:sticky;bottom:0
-}
-.chat-input input{
-  min-width:0;flex:1;border:1px solid #ddd;
-  border-radius:20px;padding:10px 13px;background:#fff;color:#111
-}
-.send{
-  border:0;border-radius:20px;padding:0 15px;
-  color:white;background:#1684ff
-}
-.call-content{text-align:center;padding:45px 20px}
-.call-avatar{
-  width:120px;height:120px;border-radius:50%;
-  margin:35px auto 20px;font-size:65px;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(145deg,#d5f6bc,#21864a)
-}
-.call-actions{
-  display:flex;justify-content:space-around;
-  margin-top:90px
-}
-.call-btn{
-  border:0;border-radius:50%;width:64px;height:64px;
-  color:white;font-size:25px;background:#27c65a
-}
-.end-call{background:#ff453a}
-.photo-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:4px
-}
-.photo{
-  aspect-ratio:1;display:flex;align-items:center;
-  justify-content:center;font-size:38px;
-  background:linear-gradient(145deg,#e1f8d2,#2c9855)
-}
-.photo:nth-child(3n+2){background:linear-gradient(145deg,#e7f3e5,#a5d43d)}
-.photo:nth-child(3n){background:linear-gradient(145deg,#d8f5e7,#238d68)}
-.note{font-size:13px;color:#777;line-height:1.6}
-.setting-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:16px;background:white;border-bottom:1px solid #eee;
-  font-size:15px
-}
-.toast{
-  position:absolute;z-index:30;top:58px;left:12px;right:12px;
-  padding:14px;border-radius:18px;background:#fffffff0;
-  color:#222;box-shadow:0 5px 20px #0003;display:none
-}
+body{margin:0;background:#101114;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;display:flex;justify-content:center;min-height:100dvh}
+버튼, 입력란, 텍스트 영역{font:inherit}
+버튼{커서:포인터}
+.browser-note{position:fixed;top:0;left:0;right:0;height:26px;background:#101114;z-index:10}
+.phone{position:relative;width:min(100vw,430px);height:100dvh;min-height:600px;overflow:hidden;background:#087c43;isolation:isolate}
+.wallpaper{position:absolute;inset:0;z-index:-2;overflow:hidden;background:linear-gradient(145deg,#00583c 0%,#00884c 42%,#b7ef22 73%,#19a866 100%)}
+.wallpaper:before{content:"";position:absolute;width:140%;height:58%;top:-9%;left:-25%;border-radius:0 0 55% 35%;background:linear-gradient(140deg,#00462f,#087b46 65%,#0d9850);transform:rotate(-8deg);box-shadow:0 20px 40px #003d2b44}
+.wallpaper:after{content:"";position:absolute;width:135%;height:45%;bottom:-12%;left:-15%;border-radius:55% 45% 0 0;background:linear-gradient(135deg,#005c39,#19a953 52%,#b6f51c);transform:rotate(-12deg)}
+.status{height:48px;padding:12px 24px 0;display:flex;justify-content:space-between;align-items:center;font-weight:650;font-size:15px;position:relative;z-index:2}
+.status-right{display:flex;align-items:center;gap:7px;font-size:14px}
+.signal{letter-spacing:-3px;font-size:18px}
+.battery{border:1.5px solid #fff;border-radius:5px;width:23px;height:12px;position:relative;margin-left:1px}
+.battery:before{content:"";position:absolute;left:2px;top:2px;width:15px;height:6px;border-radius:2px;background:#fff}
+.battery:after{content:"";position:absolute;right:-4px;top:3px;width:2px;height:4px;background:#fff;border-radius:0 2px 2px 0}
+.home-content{position:absolute;inset:48px 0 0;padding:18px 22px 110px}
+.date{font-size:14px;color:#e5f7e9;margin:2px 0 28px}
+.app-grid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:12px;row-gap:26px}
+.app{border:0;background:transparent;color:#fff;padding:0;display:flex;align-items:center;flex-direction:column;gap:7px;min-width:0;text-shadow:0 1px 3px #003d2b88}
+.app-icon{width:min(19vw,68px);height:min(19vw,68px);max-width:68px;max-height:68px;border-radius:19px;display:grid;place-items:center;font-size:31px;box-shadow:0 4px 9px #003a2530;position:relative;overflow:hidden}
+.app-icon.green{background:linear-gradient(145deg,#50e887,#08ad59)}
+.app-icon.white{background:linear-gradient(145deg,#fff,#f0f0f0);color:#14975a}
+.app-icon.gray{background:linear-gradient(145deg,#c9cfcc,#777f7b);color:white}
+.app-icon.clover{background:linear-gradient(145deg,#0b6b3b,#b5e94c);color:#d7ff67}
+.app-label{font-size:12px;white-space:nowrap}
+.dock{position:absolute;bottom:calc(22px + env(safe-area-inset-bottom));left:4.5%;right:4.5%;height:88px;border:1px solid #ffffff60;border-radius:28px;background:#ffffff35;backdrop-filter:blur(24px);display:flex;align-items:center;justify-content:space-evenly;z-index:3}
+.dock .app{width:22%}
+.dock .app-icon{width:min(17vw,58px);height:min(17vw,58px);border-radius:17px;font-size:28px}
+.dock .app-label{display:none}
+.home-indicator{position:absolute;bottom:calc(7px + env(safe-area-inset-bottom));left:calc(50% - 55px);width:110px;height:4px;border-radius:8px;background:#fff;z-index:4}
+.app-screen{position:absolute;inset:0;background:#f5f6f7;color:var(--ink);z-index:5;display:none;flex-direction:column}
+.app-screen.active{display:flex}
+.app-header{height:74px;padding:22px 18px 12px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #e6e8e9;background:#f8f8fa;flex-shrink:0}
+.back{border:0;background:transparent;color:#16834b;font-size:28px;padding:0 4px}
+.app-title{font-size:20px;font-weight:750;flex:1}
+.header-action{border:0;background:transparent;color:#16834b;font-size:14px;font-weight:700}
+.screen-body{flex:1;min-height:0;overflow:auto}
+.메시지-화면{배경:#f3f3f7}
+.contact-head{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border-bottom:1px solid #e7e7eb}
+.avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(145deg,#b8ef76,#16874c);display:grid;place-items:center;font-size:24px;color:#fff;flex-shrink:0}
+.연락처-이름{font-weight:750}
+.contact-sub{font-size:12px;color:#858b92;margin-top:3px}
+.chat-list{padding:12px 12px 18px}
+.chat-row{width:100%;display:flex;align-items:center;gap:12px;border:0;border-bottom:1px solid #e5e5e9;background:transparent;text-align:left;padding:14px 5px;color:#202126}
+.chat-row .preview{flex:1;min-width:0}
+.chat-row .preview strong{display:block;font-size:15px;margin-bottom:5px}
+.chat-row .preview span{display:block;font-size:13px;color:#7c8088;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat-row time{font-size:11px;color:#8d929a}
+.chat-view{display:none;flex:1;min-height:0;flex-direction:column;background:#f3f3f7}
+.chat-view.active{display:flex}
+.chat-messages{flex:1;overflow:auto;padding:16px 12px 10px;display:flex;flex-direction:column;gap:9px}
+.day-label{text-align:center;font-size:11px;color:#8b8e95;margin:4px 0 9px}
+.bubble-wrap{display:flex;flex-direction:column;max-width:84%;align-items:flex-start}
+.bubble-wrap.mine{align-self:flex-end;align-items:flex-end}
+.bubble{padding:10px 13px;border-radius:18px;background:#fff;color:#24252a;font-size:14px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 1px 1px #00000008}
+.mine .bubble{background:#28c65a;color:#fff;border-bottom-right-radius:5px}
+.bubble-wrap:not(.mine) .bubble{border-bottom-left-radius:5px}
+.bubble-meta{font-size:10px;color:#92959c;margin:3px 5px 0}
+.chat-compose{display:flex;align-items:flex-end;gap:8px;padding:10px 10px calc(12px + env(safe-area-inset-bottom));background:#f8f8fa;border-top:1px solid #e3e4e8}
+.chat-compose textarea{flex:1;resize:none;max-height:95px;border:1px solid #d6d8dd;border-radius:20px;padding:10px 13px;background:#fff;color:#222;outline:none}
+.send-btn{border:0;background:#24bd56;color:white;border-radius:50%;width:38px;height:38px;font-size:20px;flex-shrink:0}
+.manage-panel{display:none;padding:10px 12px;background:#fff;border-top:1px solid #e6e6e9}
+.manage-panel.show{display:block}
+.manage-panel p{font-size:12px;color:#666;margin:0 0 8px}
+.manage-row{display:flex;gap:6px;align-items:center;margin-bottom:7px}
+.manage-row input{width:100%;min-width:0;padding:8px;border:1px solid #ddd;border-radius:8px;color:#222}
+.small-btn{border:0;border-radius:8px;padding:8px 10px;background:#e7f7ec;color:#14743c;white-space:nowrap}
+.phone-pad{padding:28px 25px;text-align:center}
+.dial-number{font-size:30px;letter-spacing:2px;min-height:42px;margin:12px 0 28px}
+.dial-grid{display:grid;grid-template-columns:repeat(3,70px);justify-content:center;gap:15px}
+.digit{width:70px;height:60px;border:0;border-radius:50%;background:#e4e7e5;font-size:24px;color:#202720}
+.call-btn{display:block;margin:25px auto 0;width:64px;height:64px;border:0;border-radius:50%;background:#28c65a;color:#fff;font-size:28px}
+.call-status{min-height:24px;color:#208246;font-size:13px;margin-top:14px}
+.photo-grid{padding:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.photo-tile{aspect-ratio:1;border:0;background:linear-gradient(145deg,#d9f5ce,#25834b);display:grid;place-items:center;font-size:35px;overflow:hidden;border-radius:5px}
+.photo-tile img{width:100%;height:100%;object-fit:cover}
+.photo-tools{padding:14px;display:flex;gap:8px;flex-wrap:wrap}
+.text-input,.text-area{width:100%;padding:11px;border:1px solid #d7d9de;border-radius:10px;background:#fff;color:#222}
+.text-area{min-height:160px;resize:vertical}
+.note-wrap{padding:16px;display:flex;flex-direction:column;gap:12px}
+.settings-list{padding:8px 16px}
+.setting-row{display:flex;align-items:center;gap:12px;padding:17px 0;border-bottom:1px solid #e6e7e9}
+.setting-row span{flex:1}
+.setting-row button{border:0;background:#e6f6eb;color:#167540;padding:8px 12px;border-radius:10px}
+.wallpaper-options{display:flex;gap:8px;padding:14px 16px}
+.wallpaper-options button{flex:1;height:75px;border:2px solid #fff;border-radius:14px;background:linear-gradient(140deg,#00583c,#b7ef22)}
+.wallpaper-options button:nth-child(2){background:linear-gradient(140deg,#d9d9df,#fafafa,#b4b5bd)}
+.wallpaper-options button:nth-child(3){background:linear-gradient(140deg,#0b1f44,#7761d8,#e8a7c8)}
+.modal-bg{display:none;position:absolute;inset:0;background:#0007;z-index:8;align-items:center;justify-content:center;padding:22px}
+.modal-bg.show{display:flex}
+.modal{width:100%;background:#fff;color:#222;border-radius:18px;padding:20px}
+.modal h3{margin:0 0 12px}
+.modal p{font-size:13px;color:#777;line-height:1.5}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.modal-actions button{border:0;border-radius:9px;padding:10px 13px;background:#e9ecea;color:#333}
+.modal-actions .primary{background:#20b956;color:#fff}
+.toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);padding:10px 14px;background:#202722e8;color:white;border-radius:20px;font-size:12px;z-index:12;display:none;white-space:nowrap}
 .toast.show{display:block}
-.toast b{display:block;margin-bottom:4px}
-@media(min-width:431px){
-  body{background:#222}
-  .phone{height:min(900px,100dvh);margin:0 auto}
-}
+@media(min-width:431px){.phone{height:min(900px,100dvh);margin:auto;border-radius:30px}.home-content{padding-top:25px}}
 </style>
 </head>
-<body>
-<div class="phone">
-  <div class="wallpaper"></div>
-
-  <div class="status">
-    <span id="statusTime">9:41</span>
-    <span class="right">● ▮ Wi-Fi ▰</span>
+본문>
+<div class="phone" id="phone">
+  <div class="wallpaper" id="wallpaper"></div>
+  <div class="status"><span id="clock">9:41</span><span class="status-right"><span>●</span><span class="signal">▂▄▆</span><span>Wi‑Fi</span><span class="battery"></span></span></div>
+  <main class="home-content" id="home">
+    <div class="date" id="dateText">10월 19일 화요일</div>
+    <div class="app-grid" id="appGrid">
+      <button class="app" data-app="phone"><span class="app-icon green">☎</span><span class="app-label">전화</span></button>
+      <button class="app" data-app="messages"><span class="app-icon green">●</span><span class="app-label">메시지</span></button>
+      <button class="app" data-app="photos"><span class="app-icon white">🌈</span><span class="app-label">사진</span></button>
+      <button class="app" data-app="camera"><span class="app-icon gray">📷</span><span class="app-label">카메라</span></button>
+      <button class="app" data-app="notes"><span class="app-icon white">📝</span><span class="app-label">메모</span></button>
+      <button class="app" data-app="settings"><span class="app-icon gray">⚙</span><span class="app-label">설정</span></button>
+    </div>
+  </main>
+  <div class="dock" id="dock">
+    <button class="app" data-app="phone"><span class="app-icon green">☎</span><span class="app-label">전화</span></button>
+    <button class="app" data-app="messages"><span class="app-icon green">●</span><span class="app-label">메시지</span></button>
+    <button class="app" data-app="photos"><span class="app-icon white">🌈</span><span class="app-label">사진</span></button>
+    <button class="app" data-app="camera"><span class="app-icon gray">📷</span><span class="app-label">카메라</span></button>
   </div>
+  <div class="home-indicator" id="homeIndicator" title="홈으로"></div>
 
-  <div class="toast" id="toast" onclick="openMessages()">
-    <b>💬 타케미치</b>
-    <span id="toastText">메시지가 도착했어!</span>
-  </div>
-
-  <!-- 잠금화면 -->
-  <section class="screen lock active" id="lock"
-    onclick="unlockPhone()">
-    <div class="lock-date" id="lockDate">10월 19일 월요일</div>
-    <div class="lock-time" id="lockTime">9:41</div>
-    <div class="lock-actions">
-      <button class="round" onclick="event.stopPropagation();fakeFlash()">◉</button>
-      <button class="round" onclick="event.stopPropagation();openPhotos()">📷</button>
+  <section class="app-screen" id="screen-messages">
+    <header class="app-header"><button class="back" data-home>‹</button><div class="app-title">메시지</div><button class="header-action" id="manageToggle">편집</button></header>
+    <div class="screen-body" id="messageList">
+      <button class="chat-row" id="openTakemichi"><span class="avatar">🌙</span><span class="preview"><strong>하나가키 타케미치</strong><span id="lastPreview">오늘 뭐 했어요? 시간이 되면 같이 걷자!</span></span><time>지금</time></button>
     </div>
-    <div class="lock-hint">위로 쓸어올리거나 화면을 터치하여 열기</div>
-    <div class="lock-bar"></div>
-  </section>
-
-  <!-- 홈 화면 -->
-  <section class="screen home" id="home">
-    <div class="home-date" id="homeDate">월요일, 10월 19일</div>
-    <div class="apps">
-      <button class="app" onclick="openPhone()">
-        <span class="app-icon phone-icon">☎</span>전화
-      </button>
-      <button class="app" onclick="openMessages()">
-        <span class="app-icon msg-icon">●</span>메시지
-      </button>
-      <button class="app" onclick="openPhotos()">
-        <span class="app-icon photo-icon">🌈</span>사진
-      </button>
-      <button class="app" onclick="openAI()">
-        <span class="app-icon ai-icon">🍀</span>타케미치 AI
-      </button>
-      <button class="app" onclick="openSettings()">
-        <span class="app-icon settings-icon">⚙</span>설정
-      </button>
-      <button class="app" onclick="showNotification()">
-        <span class="app-icon camera-icon">📷</span>카메라
-      </button>
-      <button class="app" onclick="openNotes()">
-        <span class="app-icon" style="background:#fff;color:#333">📝</span>메모
-      </button>
-    </div>
-    <div class="dock">
-      <button class="app" onclick="openPhone()">
-        <span class="app-icon phone-icon">☎</span>
-      </button>
-      <button class="app" onclick="openMessages()">
-        <span class="app-icon msg-icon">●</span>
-      </button>
-      <button class="app" onclick="openPhotos()">
-        <span class="app-icon photo-icon">🌈</span>
-      </button>
-      <button class="app" onclick="openAI()">
-        <span class="app-icon ai-icon">🍀</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- 메시지 목록 -->
-  <section class="screen app-screen" id="messages">
-    <header class="app-header">
-      <button class="back" onclick="goHome()">‹ 홈</button>
-      <span>메시지</span><span>＋</span>
-    </header>
-    <button class="contact" onclick="openChat('messages')">
-      <span class="avatar">🍀</span>
-      <span><b>하나가키 타케미치</b>
-      <div class="sub" id="lastMessage">오늘 뭐 해? 😊</div></span>
-      <span class="sub">지금</span>
-    </button>
-    <div class="content note">타케미치와 주고받은 메시지가 여기에 표시돼.</div>
-  </section>
-
-  <!-- 타케미치 문자 대화 -->
-  <section class="screen app-screen" id="chat">
-    <header class="app-header">
-      <button class="back" onclick="openMessages()">‹ 메시지</button>
-      <span>타케미치 🍀</span><span>⌕</span>
-    </header>
-    <div class="chat-area" id="chatArea"></div>
-    <form class="chat-input" onsubmit="sendMessage(event,'messages')">
-      <input id="messageInput" placeholder="iMessage" autocomplete="off">
-      <button class="send">↑</button>
-    </form>
-  </section>
-
-  <!-- 전화 -->
-  <section class="screen app-screen" id="phoneApp">
-    <header class="app-header">
-      <button class="back" onclick="goHome()">‹ 홈</button>
-      <span>전화</span><span>☆</span>
-    </header>
-    <div class="call-content">
-      <div class="call-avatar">🍀</div>
-      <h2>하나가키 타케미치</h2>
-      <p class="sub" id="callStatus">즐겨찾기</p>
-      <button class="contact" style="justify-content:center;border-radius:12px"
-        onclick="startCall()">📞 타케미치에게 전화 걸기</button>
-      <p class="note">가상 전화 화면입니다. 실제 전화가 연결되지는 않아.</p>
-    </div>
-  </section>
-
-  <!-- 통화 화면 -->
-  <section class="screen app-screen" id="calling">
-    <div class="call-content" style="color:#222">
-      <div class="call-avatar">🍀</div>
-      <h2>하나가키 타케미치</h2>
-      <p id="callTimer">통화 연결 중…</p>
-      <div class="call-actions">
-        <button class="call-btn" onclick="showNotification()">🔇</button>
-        <button class="call-btn end-call" onclick="endCall()">✕</button>
-        <button class="call-btn" onclick="showNotification()">🔊</button>
+    <div class="chat-view" id="chatView">
+      <div class="contact-head"><span class="avatar">🌙</span><div><div class="contact-name">하나가키 타케미치</div><div class="contact-sub">문자 이름</div></div><button class="header-action" id="backToList">목록</button></div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="manage-panel" id="managePanel">
+        <p>메시지를 직접 수정하거나 이용하실 수 있습니다. 아래 목록에서 내용을 기록해 주세요.</p>
+        <div id="manageRows"></div>
+        <button class="small-btn" id="addPreset">타케미치목록 추가</button>
       </div>
+      <form class="chat-compose" id="sendForm"><textarea id="messageInput"row="1" placeholder="메시지 입력" aria-label="메시지 입력"></textarea><button class="send-btn" type="submit">↑</button></form>
     </div>
   </section>
 
-  <!-- 사진첩 -->
-  <section class="screen app-screen" id="photos">
-    <header class="app-header">
-      <button class="back" onclick="goHome()">‹ 홈</button>
-      <span>사진</span><span>•••</span>
-    </header>
-    <div class="content">
-      <h2>최근 항목</h2>
-      <p class="note">타케미치의 사진을 추가하고 싶다면 아래 사진 칸을 눌러 사진을 선택해.</p>
-      <input type="file" accept="image/*" multiple
-        onchange="addPhotos(event)" style="width:100%;margin:10px 0 16px">
-      <div class="photo-grid" id="photoGrid">
-        <div class="photo" onclick="photoMessage()">🍀</div>
-        <div class="photo" onclick="photoMessage()">🌿</div>
-        <div class="photo" onclick="photoMessage()">💚</div>
-        <div class="photo" onclick="photoMessage()">✨</div>
-        <div class="photo" onclick="photoMessage()">🍀</div>
-        <div class="photo" onclick="photoMessage()">🌱</div>
+  <section class="app-screen" id="screen-phone">
+    <header class="app-header"><button class="back" data-home>‹</button><div class="app-title">전화</div><button class="header-action" id="clearDial">전화</button></header>
+    <div class="screen-body phone-pad">
+      <div style="color:#737a75;font-size:13px">타케미치에게 전화하기</div>
+      <div class="dial-number" id="dialNumber"></div>
+      <div class="dial-grid" id="dialGrid"></div>
+      <button class="call-btn" id="callButton">☎</button>
+      <div class="call-status" id="callStatus">가상 전화 화면</div>
+    </div>
+  </section>
+
+  <section class="app-screen" id="screen-photos">
+    <header class="app-header"><button class="back" data-home">‹</button><div class="app-title">사진</div><button class="header-action" id="addPhoto">사진 추가</button></header>
+    <div class="screen-body"><div class="photo-tools"><span style="font-size:13px;color:#777">사진 주소(URL)를 추가하면 갤러리에 표시돼.</span></div><div class="photo-grid" id="photoGrid"></div></div>
+  </section>
+
+  <section class="app-screen" id="screen-camera">
+    <header class="app-header"><button class="back" data-home">‹</button><div class="app-title">카메라</div></header>
+    <div class="screen-body" style="background:#191a1c;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:24px;text-align:center">
+      <div style="font-size:76px">📷</div><strong>카메라</strong><p style="color:#bbb;font-size:13px;line-height:1.6">웹사이트는 실제 카메라 촬영을 자동으로 할 수 있습니다<br>이 화면은 카메라 앱 모양의 장식 사진이야.</p><button class="small-btn" id="cameraToPhotos">사진첩</button>
+    </div>
+  </section>
+
+  <section class="app-screen" id="screen-notes">
+    <header class="app-header"><button class="back" data-home>‹</button><div class="app-title">메모</div><button class="header-action" id="saveNote">저장</button></header>
+    <div class="screen-body note-wrap"><input class="text-input" id="noteTitle" placeholder="제목"><textarea class="text-area" id="noteBody" placeholder="메모를 작성하세요."></textarea><span style="font-size:12px;color:#777">저장한 메모는 이 저장에 저장돼.</span></div>
+  </section>
+
+  <section class="app-screen" id="screen-settings">
+    <header class="app-header"><button class="back" data-home">‹</button><div class="app-title">설정</div></header>
+    <div class="screen-body">
+      <div class="contact-head"><span class="avatar">🌙</span><div><div class="contact-name">전화 받기</div><div class="contact-sub">초록색 클로버 테마</div></div></div>
+      <div class="settings-list">
+        <div class="setting-row"><span>배경화면</span><button id="wallGreen">초록색</button></div>
+        <div class="setting-row"><span>메시지 내용 편집</span><button id="settingsEditMessages">편집하기</button></div>
+        <div class="setting-row"><span>메모 PDF</span><button id="clearNote">초기화</button></div>
+        <div class="setting-row"><span>안내</span><span style="font-size:12px;color:#7c827e">가상화면</span></div>
       </div>
+      <div class="wallpaper-options"><button data-wall="green" aria-label="초록 배경"></button><button data-wall="light" aria-label="밝은 배경"></button><button data-wall="purple" aria-label="보라 배경"></button></div>
     </div>
   </section>
 
-  <!-- AI 대화 -->
-  <section class="screen app-screen" id="ai">
-    <header class="app-header">
-      <button class="back" onclick="goHome()">‹ 홈</button>
-      <span>타케미치 AI 🍀</span><span>•••</span>
-    </header>
-    <div class="content note">
-      지금은 대화 화면 미리보기 버전이야. 실제 AI 답변을 연결하려면 별도의 AI API와 서버 설정이 필요해.
-    </div>
-    <div class="chat-area" id="aiArea">
-      <div class="bubble them">안녕! 나 타케미치야! 😊 무슨 일이야?</div>
-    </div>
-    <form class="chat-input" onsubmit="sendMessage(event,'ai')">
-      <input id="aiInput" placeholder="타케미치에게 말 걸기" autocomplete="off">
-      <button class="send">↑</button>
-    </form>
-  </section>
-
-  <!-- 설정 -->
-  <section class="screen app-screen" id="settings">
-    <header class="app-header">
-      <button class="back" onclick="goHome()">‹ 홈</button>
-      <span>설정</span><span>⚙</span>
-    </header>
-    <div class="content">
-      <div class="contact" style="border-radius:15px">
-        <span class="avatar">🍀</span>
-        <span><b>타케미치의 아이폰</b><div class="sub">초록색 클로버 테마</div></span>
-      </div>
-    </div>
-    <div class="setting-row">배경화면 <span>초록색</span></div>
-    <div class="setting-row">캐릭터 <span>하나가키 타케미치</span></div>
-    <div class="setting-row">알림 미리보기 <span>켬</span></div>
-    <div class="setting-row" onclick="showNotification()">테스트 알림 보내기 <span>›</span></div>
-    <div class="content note">홈 버튼을 누르면 홈 화면으로 돌아갈 수 있어.</div>
-  </section>
-
-  <!-- 메모 -->
-  <section class="screen app-screen" id="notes">
-    <header class="app-header">
-      <button class="back" onclick="goHome()">‹ 홈</button>
-      <span>메모</span><span>＋</span>
-    </header>
-    <div class="content">
-      <textarea placeholder="타케미치에 대한 메모…" 
-        style="width:100%;height:220px;border:0;padding:12px;font-size:17px"></textarea>
-    </div>
-  </section>
-
-  <div class="home-bar" onclick="goHome()"></div>
+  <div class="modal-bg" id="modalBg"><div class="modal"><h3 id="modalTitle">내용 입력</h3><p id="modalHelp"></p><input class="text-input" id="modalInput" placeholder="여기에 입력"><div class="modal-actions"><button id="modalCancel">취소</button><button class="primary" id="modalOk">확인</button></div></div></div>
+  <div class="toast" id="toast"></div>
 </div>
-
 <script>
-const screens = document.querySelectorAll('.screen');
-let chatHistory = [];
-let callInterval = null;
-let seconds = 0;
-
-function showScreen(id){
-  screens.forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.getElementById('toast').classList.remove('show');
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const defaultMessages = [
+ {from:"takemichi",text:"오늘 뭐 했어요? 시간이 같이 같이 걷자!",time:"오후 2:10"},
+ {from:"me",text:"좋아! 절대적으로?",time:"오후 2:12"},
+ {from:"takemichi",text:" 역에서 만나자! 이웃지 않게. 아마…!",time:"오후 2:13"}
+];
+메시지 = load("takephone_messages", defaultMessages);
+let photos = load("takephone_photos", []);
+let activeScreen = null, chatOpen = false, manageMode = false, dial = "", modalCallback = null;
+함수 로드(key, fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(e){return fallback}}
+함수 save(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&','<':'<','>':'>','"':'"',"'":'''}[c]))}
+function showToast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+function openApp(name){
+ activeScreen=name; $$(".app-screen").forEach(s=>s.classList.remove("active"));
+ $("#home").style.display="none";$("#dock").style.display="none";
+ const screen=$("#screen-"+name); if(screen)screen.classList.add("active");
+ if(name==="messages"){chatOpen=false;$("#messageList").style.display="block";$("#chatView").classList.remove("active");$("#manageToggle").textContent="편집";renderList()}
+ if(name==="phone")renderDial();
+ if(name==="photos")renderPhotos();
+ if(name==="notes"){ $("#noteTitle").value=load("takephone_note_title","");$("#noteBody").value=load("takephone_note_body","");}
 }
-function goHome(){showScreen('home')}
-function unlockPhone(){showScreen('home')}
-function openMessages(){showScreen('messages')}
-function openPhone(){showScreen('phoneApp')}
-function openPhotos(){showScreen('photos')}
-function openAI(){showScreen('ai')}
-function openSettings(){showScreen('settings')}
-function openNotes(){showScreen('notes')}
-function fakeFlash(){alert('손전등 화면은 미리보기야!')}
-function photoMessage(){alert('사진첩에 사진을 추가하려면 위의 사진 선택을 눌러 줘!')}
-
-function updateClock(){
-  const d=new Date();
-  const time=d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false});
-  document.getElementById('statusTime').textContent=time;
-  document.getElementById('lockTime').textContent=time;
-  const date=d.toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'long'});
-  document.getElementById('lockDate').textContent=date;
-  document.getElementById('homeDate').textContent=date;
+함수 goHome(){
+ activeScreen=null;$$(".app-screen").forEach(s=>s.classList.remove("active"));
+ $("#home").style.display="block";$("#dock").style.display="flex";$("#homeIndicator").style.display="block";
 }
-updateClock();
-setInterval(updateClock,10000);
-
-function showNotification(){
-  document.getElementById('toastText').textContent='보고 싶었어! 지금 뭐 해? 🍀';
-  document.getElementById('toast').classList.add('show');
+$$("[data-app]").forEach(b=>b.addEventListener("click",()=>openApp(b.dataset.app)));
+$$("[data-home]").forEach(b=>b.addEventListener("click",goHome));
+$("#homeIndicator").addEventListener("click",()=>{if(activeScreen)goHome()});
+function renderList(){
+ const last=messages[messages.length-1];
+ $("#lastPreview").textContent=last?(last.from==="me"?"나: ":"")+last.text:"대화가 없습니다.";
 }
-function openChat(source){
-  showScreen('chat');
-  if(!chatHistory.length){
-    addBubble('them','안녕! 나 타케미치야! 오늘은 뭐 하고 있었어? 🍀','chatArea');
-  }
+$("#openTakemichi").addEventListener("click",()=>{chatOpen=true;$("#messageList").style.display="none";$("#chatView").classList.add("active");renderMessages()});
+$("#backToList").addEventListener("click",()=>{chatOpen=false;$("#chatView").classList.remove("active");$("#messageList").style.display="block";renderList()});
+function renderMessages(){
+ const area=$("#chatMessages");
+ Area.innerHTML='<div class="day-label">오늘</div>'+messages.map((m,i)=>`<div class="bubble-wrap ${m.from==="me"?"mine":""}"><div class="bubble" data-msg="${i}" title="편집 메뉴에서 내용을 넣을 수 있어">${escapeHtml(m.text)}</div><div class="bubble-meta">${escapeHtml(m.time||"지금")}</div></div>`).join("");
+ area.scrollTop = area.scrollHeight; renderManageRows(); renderList();
 }
-function addBubble(type,text,target){
-  const area=document.getElementById(target);
-  const b=document.createElement('div');
-  b.className='bubble '+type;
-  b.textContent=text;
-  area.appendChild(b);
-  area.scrollTop=area.scrollHeight;
+$("#sendForm").addEventListener("submit",e=>{e.preventDefault();const input=$("#messageInput");const text=input.value.trim();if(!text)return;messages.push({from:"me",text,time:nowTime()});save("takephone_messages",messages);input.value="";renderMessages();});
+function nowTime(){const d=new Date();return (d.getHours()<12?"오전 ":"오후 ")+(d.getHours()%12||12)+":"+String(d.getMinutes()).padStart(2,"0")}
+$("#manageToggle").addEventListener("click",()=>{if(!chatOpen){showToast("타케미치 대화를 먼저 줘");return}manageMode=!manageMode;$("#managePanel").classList.toggle("show",manageMode);$("#manageToggle").textContent=manageMode?"완료":"편집";renderManageRows()});
+함수 renderManageRows(){
+ const rows=$("#manageRows");if(!rows)return;
+ rows.innerHTML=messages.map((m,i)=>`<div class="manage-row"><input aria-label="메시지 ${i+1}" data-edit="${i}" value="${escapeHtml(m.text)}"><button class="small-btn" data-save-msg="${i}">저장</button><button class="small-btn" data-delete-msg="${i}">삭제</button></div>`).join("");
+ rows.querySelectorAll("[data-save-msg]").forEach(b=>b.addEventListener("click",()=>{const i=+b.dataset.saveMsg;const v=rows.querySelector(`[data-edit="${i}"]`).value.trim();if(!v){showToast("메시지 내용을 입력해줘");return}messages[i].text=v;save("takephone_messages",messages);renderMessages();showToast("메시지를 수정했어")}));
+ rows.querySelectorAll("[data-delete-msg]").forEach(b=>b.addEventListener("click",()=>{messages.splice(+b.dataset.deleteMsg,1);save("takephone_messages",messages);renderMessages();showToast("메시지를 삭제했습니다")}));
 }
-function sendMessage(e,source){
-  e.preventDefault();
-  const isAI=source==='ai';
-  const input=document.getElementById(isAI?'aiInput':'messageInput');
-  const text=input.value.trim();
-  if(!text)return;
-  input.value='';
-  const target=isAI?'aiArea':'chatArea';
-  addBubble('me',text,target);
-  chatHistory.push({role:'user',content:text});
-  document.getElementById('lastMessage').textContent=text;
-  setTimeout(()=>{
-    const reply=makeReply(text);
-    addBubble('them',reply,target);
-    chatHistory.push({role:'assistant',content:reply});
-    document.getElementById('lastMessage').textContent=reply;
-  },650);
+$("#addPreset").addEventListener("click",()=>{messages.push({from:"takemichi",text:"무슨 일이야? 나한테도 말해도 돼!",time:nowTime()});save("takephone_messages",messages);renderMessages();showToast("메시지를 추가했어")});
+function renderDial(){ $("#dialNumber").textContent="dial";$("#callStatus").textContent="가상 전화 화면";const grid=$("#dialGrid");grid.innerHTML=["1","2","3","4","5","6","7","8","9","*","0","#"].map(n=>`<button class="digit" data-digit="${n}">${n}</button>`).join("");grid.querySelectorAll("[data-digit]").forEach(b=>b.addEventListener("click",()=>{dial+=b.dataset.digit;$("#dialNumber").textContent="dial"}))}
+$("#clearDial").addEventListener("click",()=>{dial="";renderDial()});
+$("#callButton").addEventListener("click",()=>{$("#callStatus").textContent=dial?"타케미치에게 연결 중…
+function renderPhotos(){
+ const grid=$("#photoGrid");const defaults=[{emoji:"🍀"},{emoji:"💚"},{emoji:"🌱"},{emoji:"☘️"},{emoji:"📷"},{emoji:"✨"}];
+ Grid.innerHTML=[...defaults,...photos].map((p,i)=>p.url?`<button class="photo-tile" data-photo="${i}"><img src="${escapeHtml(p.url)}" alt="갤러리 사진" onerror="this.parentElement.textContent='이미지를 불러올 수 없음'"></button>`:`<button class="photo-tile" data-photo="${i}">${p.emoji}</button>`).join("");
+ Grid.querySelectorAll("[data-photo]").forEach(b=>b.addEventListener("click",()=>{const idx=+b.dataset.photo;if(idx>=defaults.length){if(confirm("이 사진 주소를 삭제할까?")){photos.splice(idx-defaults.length,1);save("takephone_photos",photos);renderPhotos()}}else showToast("사진 추가 버튼으로 사진을 등록할 수 있어")}));
 }
-function makeReply(text){
-  if(/안녕|하이|ㅎㅇ/.test(text))return '안녕! 기다리고 있었어! 😊';
-  if(/뭐 해|뭐해|뭐하/.test(text))return '그냥 네 생각하고 있었어! 너는 뭐 하고 있어?';
-  if(/좋아해|사랑해/.test(text))return '에에?! 갑자기 그런 말을 하면 부끄럽잖아…! 그래도 고마워! 💚';
-  if(/힘들|우울|슬퍼|속상/.test(text))return '무슨 일이 있었어? 괜찮다면 나한테 이야기해 줘. 내가 들어줄게.';
-  if(/보고 싶/.test(text))return '나도 보고 싶어! 다음에 꼭 같이 시간 보내자! 🍀';
-  if(/잘 자|잘자/.test(text))return '응! 좋은 꿈 꿔. 내일도 꼭 이야기하자! 잘 자! 🌙';
-  return '정말? 조금 더 자세히 들려줘! 나 너랑 이야기하는 거 좋아해. 😊';
+$("#addPhoto").addEventListener("click",()=>openModal("사진 추가","캐릭터 사진의 이미지 주소(URL)를여야 합니다. 표시되어야 합니다.","https://",v=>{if(!/^https?:\/\//i.test(v)){showToast("http 또는 https를 입력해줘");return}photos.push({url:v});save("takephone_photos",photos);renderPhotos();showToast("사진을 추가했어")}));
+$("#cameraToPhotos").addEventListener("click",()=>openApp("photos"));
+$("#saveNote").addEventListener("click",()=>{save("takephone_note_title",$("#noteTitle").value);save("takephone_note_body",$("#noteBody").value);showToast("메모를 저장했습니다")});
+$("#clearNote").addEventListener("click",()=>{if(confirm("저장한 메모를 지울까?")){save("takephone_note_title","");save("takephone_note_body","");showToast("메모를 불러왔습니다")}});
+$("#settingsEditMessages").addEventListener("click",()=>{openApp("messages");$("#openTakemichi").click();manageMode=true;$("#managePanel").classList.add("show");$("#manageToggle").textContent="완료";renderManageRows()});
+function openModal(title,help,placeholder,callback){modalCallback=callback;$("#modalTitle").textContent=title;$("#modalHelp").textContent=help;$("#modalInput").placeholder=placeholder;$("#modalInput").value="";$("#modalBg").classList.add("show");setTimeout(()=>$("#modalInput").focus(),50)}
+$("#modalCancel").addEventListener("click",()=>$("#modalBg").classList.remove("show"));
+$("#modalOk").addEventListener("click",()=>{const v=$("#modalInput").value.trim();$("#modalBg").classList.remove("show");if(v&&modalCallback)modalCallback(v)});
+함수 setWallpaper(type){
+ const w=$("#wallpaper");
+ if(type==="light"){w.style.background="linear-gradient(145deg,#d8d8df,#f5f5f7 45%,#b7bdc1)";w.style.filter="none";w.style.setProperty("--x","0")}
+ 그렇지 않고 type이 "purple"이면 w.style.background="linear-gradient(145deg,#101d43,#6654c8 55%,#e7a4cb)";w.style.filter="none"}
+ 그렇지 않으면 {w.style.background="linear-gradient(145deg,#00583c 0%,#00884c 42%,#b7ef22 73%,#19a866 100%)";w.style.filter="none"}
+ // 메인 팔레트를 변경하는 동안 추상적인 레이어드 배경 화면을 유지합니다.
+ w.style.setProperty("background-image",type==="light"?"linear-gradient(145deg,#d7d8df,#f7f7f9 55%,#b9c2bd)":type==="purple"?"linear-gradient(145deg,#102043,#6858c9 55%,#e6a3c9)":"linear-gradient(145deg,#00583c 0%,#00884c 42%,#b7ef22 73%,#19a866 100%)");
 }
-
-function startCall(){
-  showScreen('calling');
-  seconds=0;
-  document.getElementById('callTimer').textContent='통화 연결 중…';
-  setTimeout(()=>{
-    if(!document.getElementById('calling').classList.contains('active'))return;
-    document.getElementById('callTimer').textContent='00:00';
-    callInterval=setInterval(()=>{
-      seconds++;
-      document.getElementById('callTimer').textContent=
-        String(Math.floor(seconds/60)).padStart(2,'0')+':'+
-        String(seconds%60).padStart(2,'0');
-    },1000);
-  },1200);
-}
-function endCall(){
-  clearInterval(callInterval);
-  showScreen('phoneApp');
-  document.getElementById('callStatus').textContent='최근 통화 · '+seconds+'초';
-}
-function addPhotos(e){
-  const grid=document.getElementById('photoGrid');
-  [...e.target.files].forEach(file=>{
-    const url=URL.createObjectURL(file);
-    const img=document.createElement('img');
-    img.src=url;img.alt='선택한 사진';
-    img.style.cssText='width:100%;aspect-ratio:1;object-fit:cover';
-    grid.appendChild(img);
-  });
-}
-let startY=0;
-document.getElementById('lock').addEventListener('touchstart',e=>{
-  startY=e.touches[0].clientY;
-},{passive:true});
-document.getElementById('lock').addEventListener('touchend',e=>{
-  if(startY-e.changedTouches[0].clientY>40)unlockPhone();
-},{passive:true});
+$$("[data-wall]").forEach(b=>b.addEventListener("click",()=>{setWallpaper(b.dataset.wall);save("takephone_wallpaper",b.dataset.wall)}));
+$("#wallGreen").addEventListener("click",()=>{setWallpaper("green");save("takephone_wallpaper","green");showToast("초록색 배경으로 등장어")});
+setWallpaper(load("takephone_wallpaper","green"));
+function updateClock(){const d=new Date();$("#clock").textContent=d.toLocaleTimeString("ko-KR",{hour:"2-digit", Minute:"2-digit",hour12:false});$("#dateText").textContent=`${d.getMonth()+1}월 ${d.getDate()}일 ${["일요일","월요일","화요일","수요일","목요일","금요일","토요일"][d.getDay()]}`}
+updateClock();setInterval(updateClock,30000);
+renderList();
 </script>
 </body>
 </html>
