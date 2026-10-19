@@ -3,240 +3,529 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Take's Phone ☘</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>TakeMichi Phone</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#e8eaf0;font-family:Arial,sans-serif;color:#26352f}
-.phone{width:100%;max-width:430px;height:100dvh;min-height:600px;margin:auto;position:relative;overflow:hidden;background:#eaf5f5}
-.screen{height:100%;padding:24px 20px 105px;overflow-y:auto;color:#26352f;
-background:
-radial-gradient(ellipse at 85% 15%,#b6f1fa 0%,transparent 42%),
-radial-gradient(ellipse at 15% 48%,#9de8cf 0%,transparent 43%),
-radial-gradient(ellipse at 80% 85%,#b7c5ff 0%,transparent 45%),
-linear-gradient(155deg,#e9f9fa 0%,#c9f4e4 40%,#dce3ff 75%,#f8e8f5 100%)}
-.status{display:flex;justify-content:space-between;font-weight:bold;font-size:14px}
-.date{text-align:center;margin-top:38px;font-size:18px;font-weight:bold}
-.clock{text-align:center;font-size:64px;font-weight:bold;margin:4px 0 35px}
-.greeting{text-align:center;color:#365b50;margin-bottom:35px}
-.apps{display:grid;grid-template-columns:repeat(3,1fr);gap:25px 12px}
-.app{border:0;background:none;color:#26352f;text-align:center;font-size:13px;cursor:pointer}
-.icon{width:67px;height:67px;border-radius:19px;background:#ffffffd9;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 7px;box-shadow:0 5px 12px #4b817733}
-.dock{position:absolute;bottom:15px;left:5%;width:90%;height:80px;border-radius:25px;background:#ffffff8c;backdrop-filter:blur(15px);display:flex;align-items:center;justify-content:space-evenly;border:1px solid #ffffffa8}
-.dock button{border:0;border-radius:18px;width:55px;height:55px;font-size:27px;background:#ffffffed;cursor:pointer}
-.page{display:none;height:100%;padding:20px 16px 100px;overflow-y:auto;background:#f4f7f3;color:#263c30}
-.page h2{margin:14px 0 22px}
-.back{border:0;background:#e1ecdf;padding:10px 14px;border-radius:12px;cursor:pointer}
-.person{display:flex;align-items:center;gap:12px;padding:14px 4px;border-bottom:1px solid #dce5db;cursor:pointer}
-.avatar{width:48px;height:48px;border-radius:50%;background:#b7dca7;display:grid;place-items:center;font-size:25px}
-.muted{color:#708174;font-size:13px}
-.chatbox{display:flex;flex-direction:column;min-height:60vh}
-.messages{display:flex;flex-direction:column;flex:1;gap:2px}
-.bubble{padding:11px 14px;border-radius:17px;margin:5px 0;max-width:85%;overflow-wrap:anywhere;white-space:pre-wrap}
-.them{background:#fff;align-self:flex-start}
-.me{background:#bce9a9;align-self:flex-end}
-.sendrow{display:flex;gap:6px;position:sticky;bottom:0;background:#f4f7f3;padding:10px 0}
-input{min-width:0;flex:1;padding:12px;border:1px solid #ccd9ca;border-radius:20px;font-size:15px}
-.action{border:0;border-radius:20px;padding:12px 16px;background:#236e48;color:white;cursor:pointer}
-.call{text-align:center;padding-top:60px}
-.callface{font-size:90px}
-.call button{margin:45px 12px 0;border:0;border-radius:50%;width:65px;height:65px;font-size:26px;cursor:pointer}
-.photos{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.photo{height:155px;border-radius:15px;background:linear-gradient(145deg,#c9f4e4,#c8d1ff);display:grid;place-items:center;font-size:48px;overflow:hidden}
-.photo img{width:100%;height:100%;object-fit:cover;cursor:pointer}
-.small{font-size:12px;color:#627765}
-.notearea{width:100%;height:180px;padding:12px;border-radius:12px;border:1px solid #ccd9ca;font:inherit}
+body{
+  margin:0;background:#111;color:white;
+  font-family:-apple-system,BlinkMacSystemFont,"Arial",sans-serif;
+  user-select:none
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.phone{
+  position:relative;width:min(100%,430px);height:100dvh;
+  min-height:600px;margin:auto;overflow:hidden;
+  background:#123e2a
+}
+.wallpaper{
+  position:absolute;inset:0;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 10% 45%,#4ed0a2 0%,transparent 38%),
+    radial-gradient(ellipse at 80% 67%,#c9f42f 0%,transparent 43%),
+    linear-gradient(145deg,#003e2a,#168d42 45%,#a9e929 75%,#06472b)
+}
+.wallpaper:before,.wallpaper:after{
+  content:"";position:absolute;width:120%;height:52%;
+  left:-10%;border-radius:48%;
+  transform:rotate(-24deg)
+}
+.wallpaper:before{
+  top:7%;background:linear-gradient(130deg,#00442d,#008b45);
+  opacity:.85
+}
+.wallpaper:after{
+  bottom:-13%;background:linear-gradient(130deg,#073e28,#26a84e,#b7f22c);
+  opacity:.9
+}
+.status{
+  position:absolute;z-index:5;top:0;left:0;right:0;
+  height:55px;padding:14px 25px;
+  display:flex;justify-content:space-between;
+  font-size:15px;font-weight:650
+}
+.status .right{letter-spacing:2px}
+.screen{
+  position:absolute;inset:0;display:none;z-index:2
+}
+.screen.active{display:block}
+.lock{
+  text-align:center;z-index:3;
+  background:transparent
+}
+.lock-date{margin-top:100px;font-size:19px;font-weight:600;color:#e5f4e9}
+.lock-time{font-size:86px;font-weight:650;letter-spacing:-4px;margin-top:0}
+.lock-hint{
+  position:absolute;bottom:43px;left:0;right:0;
+  font-size:13px;color:#fff;text-shadow:0 1px 5px #333
+}
+.lock-actions{
+  position:absolute;bottom:100px;left:0;right:0;
+  display:flex;justify-content:space-around
+}
+.round{
+  width:54px;height:54px;border-radius:50%;
+  border:1px solid #ffffff66;background:#ffffff30;color:white;
+  font-size:23px
+}
+.home{background:transparent}
+.home-date{
+  position:absolute;top:65px;left:24px;
+  font-size:14px;color:#ffffffcc
+}
+.apps{
+  position:absolute;top:110px;left:20px;right:20px;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:25px 8px
+}
+.app{
+  border:0;background:none;color:white;
+  display:flex;align-items:center;flex-direction:column;gap:5px;
+  min-width:0;font-size:12px;text-shadow:0 1px 3px #333
+}
+.app-icon{
+  width:57px;height:57px;border-radius:15px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:29px;color:white;
+  box-shadow:0 2px 7px #0002;text-shadow:none
+}
+.phone-icon{background:linear-gradient(#5bea80,#13bb52)}
+.msg-icon{background:linear-gradient(#5ff58a,#04b84e)}
+.photo-icon{background:#fff}
+.camera-icon{background:linear-gradient(140deg,#bbb,#555)}
+.ai-icon{background:linear-gradient(140deg,#145a36,#8edc5d)}
+.settings-icon{background:linear-gradient(140deg,#777,#bbb)}
+.dock{
+  position:absolute;bottom:29px;left:17px;right:17px;
+  height:88px;border-radius:28px;background:#ffffff40;
+  border:1px solid #ffffff38;backdrop-filter:blur(18px);
+  display:flex;justify-content:space-evenly;align-items:center
+}
+.dock .app-icon{width:55px;height:55px}
+.home-bar{
+  position:absolute;z-index:20;bottom:7px;left:50%;
+  transform:translateX(-50%);width:105px;height:4px;
+  border-radius:8px;background:#ffffffd9
+}
+.lock-bar{
+  position:absolute;z-index:8;bottom:8px;left:50%;
+  transform:translateX(-50%);width:105px;height:4px;
+  border-radius:8px;background:#ffffffd9
+}
+.app-screen{
+  background:#f6f6f8;color:#171719;
+  padding-top:55px;overflow-y:auto
+}
+.app-header{
+  height:54px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 17px;
+  background:#f8f8fa;border-bottom:1px solid #ddd;
+  font-weight:700;font-size:19px;position:sticky;top:0;z-index:4
+}
+.back{
+  border:0;background:none;color:#1684ff;font-size:16px;
+  padding:8px 0
+}
+.content{padding:16px}
+.contact{
+  display:flex;align-items:center;gap:12px;padding:12px;
+  border-bottom:1px solid #ddd;background:#fff;
+  width:100%;text-align:left;border-left:0;border-right:0;
+  border-top:0;color:#171719
+}
+.avatar{
+  width:48px;height:48px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,#d4f5ba,#20864a);
+  font-size:25px;flex-shrink:0
+}
+.sub{font-size:12px;color:#888;margin-top:4px}
+.chat-area{
+  display:flex;flex-direction:column;gap:12px;
+  padding:15px 12px 20px
+}
+.bubble{
+  max-width:82%;padding:10px 13px;border-radius:18px;
+  font-size:15px;line-height:1.5;overflow-wrap:anywhere
+}
+.bubble.them{align-self:flex-start;background:#e4e4e9}
+.bubble.me{align-self:flex-end;background:#31c85a;color:white}
+.chat-input{
+  display:flex;gap:8px;padding:10px;background:#fff;
+  border-top:1px solid #ddd;position:sticky;bottom:0
+}
+.chat-input input{
+  min-width:0;flex:1;border:1px solid #ddd;
+  border-radius:20px;padding:10px 13px;background:#fff;color:#111
+}
+.send{
+  border:0;border-radius:20px;padding:0 15px;
+  color:white;background:#1684ff
+}
+.call-content{text-align:center;padding:45px 20px}
+.call-avatar{
+  width:120px;height:120px;border-radius:50%;
+  margin:35px auto 20px;font-size:65px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,#d5f6bc,#21864a)
+}
+.call-actions{
+  display:flex;justify-content:space-around;
+  margin-top:90px
+}
+.call-btn{
+  border:0;border-radius:50%;width:64px;height:64px;
+  color:white;font-size:25px;background:#27c65a
+}
+.end-call{background:#ff453a}
+.photo-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:4px
+}
+.photo{
+  aspect-ratio:1;display:flex;align-items:center;
+  justify-content:center;font-size:38px;
+  background:linear-gradient(145deg,#e1f8d2,#2c9855)
+}
+.photo:nth-child(3n+2){background:linear-gradient(145deg,#e7f3e5,#a5d43d)}
+.photo:nth-child(3n){background:linear-gradient(145deg,#d8f5e7,#238d68)}
+.note{font-size:13px;color:#777;line-height:1.6}
+.setting-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px;background:white;border-bottom:1px solid #eee;
+  font-size:15px
+}
+.toast{
+  position:absolute;z-index:30;top:58px;left:12px;right:12px;
+  padding:14px;border-radius:18px;background:#fffffff0;
+  color:#222;box-shadow:0 5px 20px #0003;display:none
+}
+.toast.show{display:block}
+.toast b{display:block;margin-bottom:4px}
+@media(min-width:431px){
+  body{background:#222}
+  .phone{height:min(900px,100dvh);margin:0 auto}
+}
 </style>
 </head>
 <body>
 <div class="phone">
+  <div class="wallpaper"></div>
 
-<main class="screen" id="home">
-  <div class="status"><span id="time">11:10</span><span>● 5G ▰</span></div>
-  <div class="date">9월 7일 · 월요일</div>
-  <div class="clock" id="clock">11:10</div>
-  <p class="greeting">Take's Phone ☘️<br>오늘도 함께하자!</p>
-
-  <div class="apps">
-    <button class="app" onclick="openPage('messages')"><div class="icon">💬</div>메시지</button>
-    <button class="app" onclick="openPage('phone')"><div class="icon">📞</div>전화</button>
-    <button class="app" onclick="openPage('gallery')"><div class="icon">🌈</div>사진첩</button>
-    <button class="app" onclick="openPage('profile')"><div class="icon">🍀</div>타케미치</button>
-    <button class="app" onclick="openPage('notes')"><div class="icon">📝</div>메모</button>
-    <button class="app" onclick="openPage('settings')"><div class="icon">⚙️</div>설정</button>
+  <div class="status">
+    <span id="statusTime">9:41</span>
+    <span class="right">● ▮ Wi-Fi ▰</span>
   </div>
-</main>
 
-<section class="page" id="messages">
-  <button class="back" onclick="goHome()">← 홈</button>
-  <h2>💬 메시지</h2>
-  <div class="person" onclick="openChat()">
-    <div class="avatar">🍀</div>
-    <div><b>하나가키 타케미치</b><div class="muted" id="lastmsg">안녕! 오늘은 어땠어?</div></div>
-    <span style="margin-left:auto">›</span>
+  <div class="toast" id="toast" onclick="openMessages()">
+    <b>💬 타케미치</b>
+    <span id="toastText">메시지가 도착했어!</span>
   </div>
-  <p class="small">타케미치와의 대화</p>
-</section>
 
-<section class="page" id="chat">
-  <button class="back" onclick="openPage('messages')">← 대화 목록</button>
-  <h2>🍀 타케미치</h2>
-  <div class="chatbox">
-    <div class="messages" id="chatlog">
-      <div class="bubble them">안녕! 나 타케미치야! ☘️<br>오늘 무슨 일이 있었어?</div>
+  <!-- 잠금화면 -->
+  <section class="screen lock active" id="lock"
+    onclick="unlockPhone()">
+    <div class="lock-date" id="lockDate">10월 19일 월요일</div>
+    <div class="lock-time" id="lockTime">9:41</div>
+    <div class="lock-actions">
+      <button class="round" onclick="event.stopPropagation();fakeFlash()">◉</button>
+      <button class="round" onclick="event.stopPropagation();openPhotos()">📷</button>
     </div>
-    <div class="sendrow">
-      <input id="msg" placeholder="메시지 입력...">
-      <button class="action" onclick="sendMsg()">전송</button>
+    <div class="lock-hint">위로 쓸어올리거나 화면을 터치하여 열기</div>
+    <div class="lock-bar"></div>
+  </section>
+
+  <!-- 홈 화면 -->
+  <section class="screen home" id="home">
+    <div class="home-date" id="homeDate">월요일, 10월 19일</div>
+    <div class="apps">
+      <button class="app" onclick="openPhone()">
+        <span class="app-icon phone-icon">☎</span>전화
+      </button>
+      <button class="app" onclick="openMessages()">
+        <span class="app-icon msg-icon">●</span>메시지
+      </button>
+      <button class="app" onclick="openPhotos()">
+        <span class="app-icon photo-icon">🌈</span>사진
+      </button>
+      <button class="app" onclick="openAI()">
+        <span class="app-icon ai-icon">🍀</span>타케미치 AI
+      </button>
+      <button class="app" onclick="openSettings()">
+        <span class="app-icon settings-icon">⚙</span>설정
+      </button>
+      <button class="app" onclick="showNotification()">
+        <span class="app-icon camera-icon">📷</span>카메라
+      </button>
+      <button class="app" onclick="openNotes()">
+        <span class="app-icon" style="background:#fff;color:#333">📝</span>메모
+      </button>
     </div>
-    <p class="small">현재는 테스트 답변이야. 실제 AI 연결은 별도로 설정해야 해.</p>
-  </div>
-</section>
+    <div class="dock">
+      <button class="app" onclick="openPhone()">
+        <span class="app-icon phone-icon">☎</span>
+      </button>
+      <button class="app" onclick="openMessages()">
+        <span class="app-icon msg-icon">●</span>
+      </button>
+      <button class="app" onclick="openPhotos()">
+        <span class="app-icon photo-icon">🌈</span>
+      </button>
+      <button class="app" onclick="openAI()">
+        <span class="app-icon ai-icon">🍀</span>
+      </button>
+    </div>
+  </section>
 
-<section class="page" id="phone">
-  <button class="back" onclick="goHome()">← 홈</button>
-  <div class="call">
-    <div class="callface">🍀</div>
-    <h2>하나가키 타케미치</h2>
-    <p id="callstatus">전화할 준비가 됐어</p>
-    <button style="background:#45b86c;color:white" onclick="startCall()">📞</button>
-    <button style="background:#e65b60;color:white" onclick="endCall()">✕</button>
-    <p class="small">가상 전화 화면이야. 실제 전화는 연결되지 않아.</p>
-  </div>
-</section>
+  <!-- 메시지 목록 -->
+  <section class="screen app-screen" id="messages">
+    <header class="app-header">
+      <button class="back" onclick="goHome()">‹ 홈</button>
+      <span>메시지</span><span>＋</span>
+    </header>
+    <button class="contact" onclick="openChat('messages')">
+      <span class="avatar">🍀</span>
+      <span><b>하나가키 타케미치</b>
+      <div class="sub" id="lastMessage">오늘 뭐 해? 😊</div></span>
+      <span class="sub">지금</span>
+    </button>
+    <div class="content note">타케미치와 주고받은 메시지가 여기에 표시돼.</div>
+  </section>
 
-<section class="page" id="gallery">
-  <button class="back" onclick="goHome()">← 홈</button>
-  <h2>🌈 타케미치 사진첩</h2>
-  <p class="small">휴대폰에 저장한 이미지를 추가해 봐.</p>
-  <label class="action" style="display:inline-block;margin-bottom:18px;cursor:pointer">
-    ＋ 사진 추가
-    <input type="file" accept="image/*" multiple hidden onchange="addPhotos(event)">
-  </label>
-  <div class="photos" id="photos">
-    <div class="photo">🍀</div>
-    <div class="photo">🌱</div>
-    <div class="photo">💚</div>
-    <div class="photo">🌿</div>
-  </div>
-</section>
+  <!-- 타케미치 문자 대화 -->
+  <section class="screen app-screen" id="chat">
+    <header class="app-header">
+      <button class="back" onclick="openMessages()">‹ 메시지</button>
+      <span>타케미치 🍀</span><span>⌕</span>
+    </header>
+    <div class="chat-area" id="chatArea"></div>
+    <form class="chat-input" onsubmit="sendMessage(event,'messages')">
+      <input id="messageInput" placeholder="iMessage" autocomplete="off">
+      <button class="send">↑</button>
+    </form>
+  </section>
 
-<section class="page" id="profile">
-  <button class="back" onclick="goHome()">← 홈</button>
-  <div class="call">
-    <div class="callface">🍀</div>
-    <h2>하나가키 타케미치</h2>
-    <p>나만의 타케미치 휴대폰</p>
-    <p>좋아하는 색: 초록색</p>
-    <p>좋아하는 상징: 클로버 ☘️</p>
-    <button class="action" onclick="openChat()">메시지 보내기</button>
-    <button class="action" onclick="openPage('phone')">전화 걸기</button>
-  </div>
-</section>
+  <!-- 전화 -->
+  <section class="screen app-screen" id="phoneApp">
+    <header class="app-header">
+      <button class="back" onclick="goHome()">‹ 홈</button>
+      <span>전화</span><span>☆</span>
+    </header>
+    <div class="call-content">
+      <div class="call-avatar">🍀</div>
+      <h2>하나가키 타케미치</h2>
+      <p class="sub" id="callStatus">즐겨찾기</p>
+      <button class="contact" style="justify-content:center;border-radius:12px"
+        onclick="startCall()">📞 타케미치에게 전화 걸기</button>
+      <p class="note">가상 전화 화면입니다. 실제 전화가 연결되지는 않아.</p>
+    </div>
+  </section>
 
-<section class="page" id="notes">
-  <button class="back" onclick="goHome()">← 홈</button>
-  <h2>📝 메모</h2>
-  <textarea class="notearea" id="note" placeholder="타케미치에게 하고 싶은 말..." oninput="saveNote()"></textarea>
-  <p class="small">메모는 이 브라우저에 저장돼.</p>
-</section>
+  <!-- 통화 화면 -->
+  <section class="screen app-screen" id="calling">
+    <div class="call-content" style="color:#222">
+      <div class="call-avatar">🍀</div>
+      <h2>하나가키 타케미치</h2>
+      <p id="callTimer">통화 연결 중…</p>
+      <div class="call-actions">
+        <button class="call-btn" onclick="showNotification()">🔇</button>
+        <button class="call-btn end-call" onclick="endCall()">✕</button>
+        <button class="call-btn" onclick="showNotification()">🔊</button>
+      </div>
+    </div>
+  </section>
 
-<section class="page" id="settings">
-  <button class="back" onclick="goHome()">← 홈</button>
-  <h2>⚙️ 설정</h2>
-  <p>테마: 기본 아이폰풍 민트 배경</p>
-  <p>캐릭터: 하나가키 타케미치</p>
-  <p>상징: 클로버 ☘️</p>
-  <button class="action" onclick="alert('Take’s Phone ☘️')">앱 정보</button>
-</section>
+  <!-- 사진첩 -->
+  <section class="screen app-screen" id="photos">
+    <header class="app-header">
+      <button class="back" onclick="goHome()">‹ 홈</button>
+      <span>사진</span><span>•••</span>
+    </header>
+    <div class="content">
+      <h2>최근 항목</h2>
+      <p class="note">타케미치의 사진을 추가하고 싶다면 아래 사진 칸을 눌러 사진을 선택해.</p>
+      <input type="file" accept="image/*" multiple
+        onchange="addPhotos(event)" style="width:100%;margin:10px 0 16px">
+      <div class="photo-grid" id="photoGrid">
+        <div class="photo" onclick="photoMessage()">🍀</div>
+        <div class="photo" onclick="photoMessage()">🌿</div>
+        <div class="photo" onclick="photoMessage()">💚</div>
+        <div class="photo" onclick="photoMessage()">✨</div>
+        <div class="photo" onclick="photoMessage()">🍀</div>
+        <div class="photo" onclick="photoMessage()">🌱</div>
+      </div>
+    </div>
+  </section>
 
-<nav class="dock">
-  <button onclick="openPage('phone')">📞</button>
-  <button onclick="goHome()">🏠</button>
-  <button onclick="openPage('messages')">💬</button>
-  <button onclick="openPage('gallery')">🌈</button>
-</nav>
+  <!-- AI 대화 -->
+  <section class="screen app-screen" id="ai">
+    <header class="app-header">
+      <button class="back" onclick="goHome()">‹ 홈</button>
+      <span>타케미치 AI 🍀</span><span>•••</span>
+    </header>
+    <div class="content note">
+      지금은 대화 화면 미리보기 버전이야. 실제 AI 답변을 연결하려면 별도의 AI API와 서버 설정이 필요해.
+    </div>
+    <div class="chat-area" id="aiArea">
+      <div class="bubble them">안녕! 나 타케미치야! 😊 무슨 일이야?</div>
+    </div>
+    <form class="chat-input" onsubmit="sendMessage(event,'ai')">
+      <input id="aiInput" placeholder="타케미치에게 말 걸기" autocomplete="off">
+      <button class="send">↑</button>
+    </form>
+  </section>
+
+  <!-- 설정 -->
+  <section class="screen app-screen" id="settings">
+    <header class="app-header">
+      <button class="back" onclick="goHome()">‹ 홈</button>
+      <span>설정</span><span>⚙</span>
+    </header>
+    <div class="content">
+      <div class="contact" style="border-radius:15px">
+        <span class="avatar">🍀</span>
+        <span><b>타케미치의 아이폰</b><div class="sub">초록색 클로버 테마</div></span>
+      </div>
+    </div>
+    <div class="setting-row">배경화면 <span>초록색</span></div>
+    <div class="setting-row">캐릭터 <span>하나가키 타케미치</span></div>
+    <div class="setting-row">알림 미리보기 <span>켬</span></div>
+    <div class="setting-row" onclick="showNotification()">테스트 알림 보내기 <span>›</span></div>
+    <div class="content note">홈 버튼을 누르면 홈 화면으로 돌아갈 수 있어.</div>
+  </section>
+
+  <!-- 메모 -->
+  <section class="screen app-screen" id="notes">
+    <header class="app-header">
+      <button class="back" onclick="goHome()">‹ 홈</button>
+      <span>메모</span><span>＋</span>
+    </header>
+    <div class="content">
+      <textarea placeholder="타케미치에 대한 메모…" 
+        style="width:100%;height:220px;border:0;padding:12px;font-size:17px"></textarea>
+    </div>
+  </section>
+
+  <div class="home-bar" onclick="goHome()"></div>
 </div>
 
 <script>
-function openPage(id){
-  document.getElementById('home').style.display='none';
-  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-  document.getElementById(id).style.display='block';
+const screens = document.querySelectorAll('.screen');
+let chatHistory = [];
+let callInterval = null;
+let seconds = 0;
+
+function showScreen(id){
+  screens.forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('toast').classList.remove('show');
 }
-function goHome(){
-  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-  document.getElementById('home').style.display='block';
-}
-function openChat(){
-  openPage('chat');
-  document.getElementById('msg').focus();
-}
-function sendMsg(){
-  const input=document.getElementById('msg');
-  const value=input.value.trim();
-  if(!value)return;
-  const log=document.getElementById('chatlog');
-  const b=document.createElement('div');
-  b.className='bubble me';
-  b.textContent=value;
-  log.appendChild(b);
-  input.value='';
-  document.getElementById('lastmsg').textContent=value;
-  saveChat();
-  setTimeout(()=>{
-    const reply=document.createElement('div');
-    reply.className='bubble them';
-    reply.textContent='그랬구나! 이야기해 줘서 고마워. 내일도 같이 힘내자! ☘️';
-    log.appendChild(reply);
-    document.getElementById('lastmsg').textContent=reply.textContent;
-    saveChat();
-  },600);
-}
-document.getElementById('msg').addEventListener('keydown',e=>{
-  if(e.key==='Enter')sendMsg();
-});
-function saveChat(){
-  localStorage.setItem('takeChat',document.getElementById('chatlog').innerHTML);
-}
-function startCall(){
-  document.getElementById('callstatus').textContent='통화 중 ☘️';
-}
-function endCall(){
-  document.getElementById('callstatus').textContent='통화가 종료됐어';
-}
-function addPhotos(event){
-  const box=document.getElementById('photos');
-  [...event.target.files].forEach(file=>{
-    const reader=new FileReader();
-    reader.onload=()=>{
-      const cell=document.createElement('div');
-      cell.className='photo';
-      const img=document.createElement('img');
-      img.src=reader.result;
-      img.alt='추가한 사진';
-      img.onclick=()=>window.open(img.src,'_blank');
-      cell.appendChild(img);
-      box.prepend(cell);
-    };
-    reader.readAsDataURL(file);
-  });
-}
-function saveNote(){
-  localStorage.setItem('takeNote',document.getElementById('note').value);
-}
+function goHome(){showScreen('home')}
+function unlockPhone(){showScreen('home')}
+function openMessages(){showScreen('messages')}
+function openPhone(){showScreen('phoneApp')}
+function openPhotos(){showScreen('photos')}
+function openAI(){showScreen('ai')}
+function openSettings(){showScreen('settings')}
+function openNotes(){showScreen('notes')}
+function fakeFlash(){alert('손전등 화면은 미리보기야!')}
+function photoMessage(){alert('사진첩에 사진을 추가하려면 위의 사진 선택을 눌러 줘!')}
+
 function updateClock(){
   const d=new Date();
-  const t=d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false});
-  document.getElementById('clock').textContent=t;
-  document.getElementById('time').textContent=t;
+  const time=d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false});
+  document.getElementById('statusTime').textContent=time;
+  document.getElementById('lockTime').textContent=time;
+  const date=d.toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'long'});
+  document.getElementById('lockDate').textContent=date;
+  document.getElementById('homeDate').textContent=date;
 }
 updateClock();
-setInterval(updateClock,30000);
-document.getElementById('note').value=localStorage.getItem('takeNote')||'';
-if(localStorage.getItem('takeChat')){
-  document.getElementById('chatlog').innerHTML=localStorage.getItem('takeChat');
+setInterval(updateClock,10000);
+
+function showNotification(){
+  document.getElementById('toastText').textContent='보고 싶었어! 지금 뭐 해? 🍀';
+  document.getElementById('toast').classList.add('show');
 }
+function openChat(source){
+  showScreen('chat');
+  if(!chatHistory.length){
+    addBubble('them','안녕! 나 타케미치야! 오늘은 뭐 하고 있었어? 🍀','chatArea');
+  }
+}
+function addBubble(type,text,target){
+  const area=document.getElementById(target);
+  const b=document.createElement('div');
+  b.className='bubble '+type;
+  b.textContent=text;
+  area.appendChild(b);
+  area.scrollTop=area.scrollHeight;
+}
+function sendMessage(e,source){
+  e.preventDefault();
+  const isAI=source==='ai';
+  const input=document.getElementById(isAI?'aiInput':'messageInput');
+  const text=input.value.trim();
+  if(!text)return;
+  input.value='';
+  const target=isAI?'aiArea':'chatArea';
+  addBubble('me',text,target);
+  chatHistory.push({role:'user',content:text});
+  document.getElementById('lastMessage').textContent=text;
+  setTimeout(()=>{
+    const reply=makeReply(text);
+    addBubble('them',reply,target);
+    chatHistory.push({role:'assistant',content:reply});
+    document.getElementById('lastMessage').textContent=reply;
+  },650);
+}
+function makeReply(text){
+  if(/안녕|하이|ㅎㅇ/.test(text))return '안녕! 기다리고 있었어! 😊';
+  if(/뭐 해|뭐해|뭐하/.test(text))return '그냥 네 생각하고 있었어! 너는 뭐 하고 있어?';
+  if(/좋아해|사랑해/.test(text))return '에에?! 갑자기 그런 말을 하면 부끄럽잖아…! 그래도 고마워! 💚';
+  if(/힘들|우울|슬퍼|속상/.test(text))return '무슨 일이 있었어? 괜찮다면 나한테 이야기해 줘. 내가 들어줄게.';
+  if(/보고 싶/.test(text))return '나도 보고 싶어! 다음에 꼭 같이 시간 보내자! 🍀';
+  if(/잘 자|잘자/.test(text))return '응! 좋은 꿈 꿔. 내일도 꼭 이야기하자! 잘 자! 🌙';
+  return '정말? 조금 더 자세히 들려줘! 나 너랑 이야기하는 거 좋아해. 😊';
+}
+
+function startCall(){
+  showScreen('calling');
+  seconds=0;
+  document.getElementById('callTimer').textContent='통화 연결 중…';
+  setTimeout(()=>{
+    if(!document.getElementById('calling').classList.contains('active'))return;
+    document.getElementById('callTimer').textContent='00:00';
+    callInterval=setInterval(()=>{
+      seconds++;
+      document.getElementById('callTimer').textContent=
+        String(Math.floor(seconds/60)).padStart(2,'0')+':'+
+        String(seconds%60).padStart(2,'0');
+    },1000);
+  },1200);
+}
+function endCall(){
+  clearInterval(callInterval);
+  showScreen('phoneApp');
+  document.getElementById('callStatus').textContent='최근 통화 · '+seconds+'초';
+}
+function addPhotos(e){
+  const grid=document.getElementById('photoGrid');
+  [...e.target.files].forEach(file=>{
+    const url=URL.createObjectURL(file);
+    const img=document.createElement('img');
+    img.src=url;img.alt='선택한 사진';
+    img.style.cssText='width:100%;aspect-ratio:1;object-fit:cover';
+    grid.appendChild(img);
+  });
+}
+let startY=0;
+document.getElementById('lock').addEventListener('touchstart',e=>{
+  startY=e.touches[0].clientY;
+},{passive:true});
+document.getElementById('lock').addEventListener('touchend',e=>{
+  if(startY-e.changedTouches[0].clientY>40)unlockPhone();
+},{passive:true});
 </script>
 </body>
 </html>
